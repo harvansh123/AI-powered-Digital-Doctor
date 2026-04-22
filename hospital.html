@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nearest Hospital — AI Digital Doctor</title>
+  <meta name="description" content="Find the nearest hospitals and medical centers using your location." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">🏥</div>
+        <span>AI Digital Doctor</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="abstract.html">Abstract</a>
+        <div class="nav-dropdown">
+          <a href="#" onclick="return false" style="display:flex;align-items:center;gap:4px;">Categories <span
+              style="font-size:0.7rem;">▾</span></a>
+          <div class="nav-dropdown-menu">
+            <a href="medicine.html"><span class="icon">💊</span> Medicine Recommendation</a>
+            <a href="appointment.html"><span class="icon">👨‍⚕️</span> Doctor Appointment</a>
+            <a href="hospital.html"><span class="icon">🏥</span> Nearest Hospital</a>
+            <a href="blood-donation.html"><span class="icon">🩸</span> Blood Donation</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+        <a href="register.html" class="btn-nav-signup">Sign Up</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div style="position:relative;z-index:1">
+      <span class="tag" style="background:rgba(255,255,255,0.15);color:white;">📍 GPS Powered</span>
+      <h1 style="margin:0.75rem 0 0.5rem">Nearest Hospitals</h1>
+      <p>Find hospitals and emergency care centers near your current location</p>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <section class="section-sm">
+    <div class="container">
+
+      <!-- Location banner -->
+      <div id="locationBanner" class="alert alert-info" style="margin-bottom:1.5rem">
+        <span class="alert-icon">📍</span>
+        <div>
+          <strong>Enable Location Access</strong><br />
+          Allow location access to find hospitals near you, or search by city/pincode below.
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" onclick="getLocation()">📍 Use My Location</button>
+            <button class="btn btn-outline btn-sm" onclick="showManualSearch()">🔍 Search Manually</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="locationStatus" style="display:none;" class="alert alert-success">
+        <span class="alert-icon">✅</span>
+        <div id="locationText">Location detected! Showing hospitals near you.</div>
+      </div>
+
+      <!-- Manual Search -->
+      <div id="manualSearch" style="display:none;margin-bottom:1.5rem">
+        <div class="filter-bar">
+          <div style="flex:1">
+            <input id="citySearch" class="form-control" type="text" placeholder="Enter city, area, or pincode..." />
+          </div>
+          <div style="min-width:160px">
+            <select id="hospitalType" class="form-control">
+              <option value="">All Types</option>
+              <option value="Government">Government</option>
+              <option value="Private">Private</option>
+              <option value="Emergency">Emergency</option>
+              <option value="Specialty">Specialty</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="searchHospitals()" style="margin-top:auto">Search</button>
+        </div>
+      </div>
+
+      <!-- Map placeholder -->
+      <div id="mapContainer"
+        style="background:linear-gradient(135deg,#eff6ff,#e0f2fe);border:1px solid #bae6fd;border-radius:var(--radius);height:300px;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;position:relative;overflow:hidden">
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-size:3.5rem;margin-bottom:0.75rem">🗺️</div>
+          <h3 style="color:var(--primary)">Interactive Map</h3>
+          <p style="font-size:0.875rem;color:var(--text-light)">Enable location to view hospitals on map<br />
+            <a href="#" onclick="openGoogleMaps()" style="color:var(--primary);font-weight:600">Open in Google Maps
+              →</a>
+          </p>
+        </div>
+        <!-- Decorative pins -->
+        <div style="position:absolute;top:30%;left:20%;font-size:1.5rem;animation:bounce-pin 2s ease-in-out infinite">📍
+        </div>
+        <div
+          style="position:absolute;top:50%;left:55%;font-size:1.5rem;animation:bounce-pin 2s ease-in-out infinite 0.5s">
+          📍</div>
+        <div
+          style="position:absolute;top:25%;left:70%;font-size:1.5rem;animation:bounce-pin 2s ease-in-out infinite 1s">📍
+        </div>
+      </div>
+
+      <!-- Results header -->
+      <div
+        style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem">
+        <div>
+          <h2 style="font-size:1.25rem;">Nearby Hospitals</h2>
+          <p style="font-size:0.875rem;color:var(--text-light)" id="hospitalCount">Showing all hospitals</p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="filterHospitals('all')">All</button>
+          <button class="btn btn-outline btn-sm" onclick="filterHospitals('Government')">Government</button>
+          <button class="btn btn-outline btn-sm" onclick="filterHospitals('Private')">Private</button>
+          <button class="btn btn-outline btn-sm" onclick="filterHospitals('Emergency')">Emergency</button>
+        </div>
+      </div>
+
+      <!-- Hospital list -->
+      <div id="hospitalList" style="display:flex;flex-direction:column;gap:1rem"></div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span style="font-size:1.5rem">🏥</span> AI Digital Doctor</div>
+        <p>Your intelligent AI-powered healthcare companion available 24/7.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="medicine.html">💊 Medicine Recommendation</a></li>
+          <li><a href="appointment.html">👨‍⚕️ Book Appointment</a></li>
+          <li><a href="hospital.html">🏥 Find Hospital</a></li>
+          <li><a href="blood-donation.html">🩸 Blood Donation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item"><span class="contact-icon">📧</span><span>aidigitaldoctor@health.com</span>
+        </div>
+        <div class="footer-contact-item"><span class="contact-icon">📞</span><span>+91 98765 43210</span></div>
+      </div>
+    </div>
+    <div
+      style="padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+      © 2024 AI Digital Doctor. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="toast-container"></div>
+  <style>
+    @keyframes bounce-pin {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-10px)
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/profile-panel.js"></script>
+  <script src="js/hospital.js"></script>
+</body>
+
+</html>

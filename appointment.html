@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Appointment — AI Digital Doctor</title>
+  <meta name="description" content="Book appointments with specialist doctors online."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍⚕️</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🏥</div>
+      <span>AI Digital Doctor</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="abstract.html">Abstract</a>
+      <div class="nav-dropdown">
+        <a href="#" onclick="return false" style="display:flex;align-items:center;gap:4px;">Categories <span style="font-size:0.7rem;">▾</span></a>
+        <div class="nav-dropdown-menu">
+          <a href="medicine.html"><span class="icon">💊</span> Medicine Recommendation</a>
+          <a href="appointment.html"><span class="icon">👨‍⚕️</span> Doctor Appointment</a>
+          <a href="hospital.html"><span class="icon">🏥</span> Nearest Hospital</a>
+          <a href="blood-donation.html"><span class="icon">🩸</span> Blood Donation</a>
+        </div>
+      </div>
+    </div>
+    <div class="nav-actions" id="navActions">
+      <a href="login.html" class="btn-nav-login">Sign In</a>
+      <a href="register.html" class="btn-nav-signup">Sign Up</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div style="position:relative;z-index:1">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:white;">👨‍⚕️ Book Now</span>
+    <h1 style="margin:0.75rem 0 0.5rem">Doctor Appointment</h1>
+    <p>Browse specialist doctors and book your appointment in seconds</p>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<section class="section-sm">
+  <div class="container">
+    <div class="filter-bar">
+      <div style="flex:1;min-width:200px">
+        <label class="form-label" style="margin-bottom:4px">Search Doctor</label>
+        <input id="searchDoctor" class="form-control" type="text" placeholder="Search by name..." oninput="filterDoctors()"/>
+      </div>
+      <div style="min-width:200px">
+        <label class="form-label" style="margin-bottom:4px">Specialization</label>
+        <select id="filterSpec" class="form-control" onchange="filterDoctors()">
+          <option value="">All Specializations</option>
+          <option value="General Physician">General Physician</option>
+          <option value="Cardiologist">Cardiologist</option>
+          <option value="Dermatologist">Dermatologist</option>
+          <option value="Neurologist">Neurologist</option>
+          <option value="Orthopedist">Orthopedist</option>
+          <option value="Pediatrician">Pediatrician</option>
+          <option value="Psychiatrist">Psychiatrist</option>
+          <option value="ENT Specialist">ENT Specialist</option>
+          <option value="Gastroenterologist">Gastroenterologist</option>
+          <option value="Pulmonologist">Pulmonologist</option>
+        </select>
+      </div>
+      <div style="min-width:180px">
+        <label class="form-label" style="margin-bottom:4px">Availability</label>
+        <select id="filterAvail" class="form-control" onchange="filterDoctors()">
+          <option value="">Any Day</option>
+          <option value="today">Available Today</option>
+          <option value="tomorrow">Tomorrow</option>
+          <option value="week">This Week</option>
+        </select>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="resetFilters()" style="margin-top:auto">Reset</button>
+    </div>
+
+    <!-- Doctor count -->
+    <div style="margin-bottom:1.5rem;color:var(--text-light);font-size:0.875rem">
+      Showing <strong id="doctorCount">0</strong> doctors
+    </div>
+
+    <!-- Doctors Grid -->
+    <div class="grid grid-3" id="doctorGrid"></div>
+  </div>
+</section>
+
+<!-- APPOINTMENT MODAL -->
+<div class="modal-overlay" id="appointmentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 style="display:flex;align-items:center;gap:8px">📅 Book Appointment</h3>
+      <button class="btn-close" onclick="closeModal('appointmentModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="selectedDoctorInfo" style="display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:1.5rem">
+        <!-- Doctor info injected by JS -->
+      </div>
+      <form id="appointmentForm" onsubmit="bookAppointment(event)">
+        <div class="grid grid-2" style="gap:1rem">
+          <div class="form-group">
+            <label class="form-label required">Patient Name</label>
+            <input id="patientName" class="form-control" type="text" placeholder="Your full name" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Phone Number</label>
+            <input id="patientPhone" class="form-control" type="tel" placeholder="+91 98765 43210" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label required">Email Address</label>
+          <input id="patientEmail" class="form-control" type="email" placeholder="your@email.com" required/>
+        </div>
+        <div class="grid grid-2" style="gap:1rem">
+          <div class="form-group">
+            <label class="form-label required">Preferred Date</label>
+            <input id="apptDate" class="form-control" type="date" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label required">Time Slot</label>
+            <select id="apptTime" class="form-control" required>
+              <option value="">Select time slot</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reason / Symptoms</label>
+          <textarea id="apptReason" class="form-control" rows="3" placeholder="Brief description of your symptoms or reason for visit"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('appointmentModal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" id="confirmBookingBtn" onclick="bookAppointment(event)">✅ Confirm Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-body" style="padding:2rem">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="font-size:3.5rem;margin-bottom:0.75rem">✅</div>
+        <h2 style="color:var(--accent);margin-bottom:0.25rem">Appointment Confirmed!</h2>
+        <p style="color:var(--text-light);font-size:0.875rem">Your appointment has been successfully booked.</p>
+      </div>
+      <div id="confirmDetails" style="background:var(--bg);border-radius:var(--radius-sm);padding:1rem;font-size:0.875rem;margin-bottom:1rem"></div>
+      <div style="display:flex;gap:10px;margin-top:1rem">
+        <button class="btn btn-outline" style="flex:1" onclick="closeModal('confirmModal');loadMyAppointments()">
+          📋 View My Appointments
+        </button>
+        <button class="btn btn-primary" style="flex:1" onclick="closeModal('confirmModal')">🎉 Done!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MY APPOINTMENTS SECTION -->
+<section id="myApptsSection" style="display:none;padding:0 0 4rem">
+  <div class="container">
+    <div style="border:2px solid var(--border);border-radius:var(--radius);overflow:hidden;background:white">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:linear-gradient(135deg,#f0fdf4,#eff6ff);border-bottom:1px solid var(--border)">
+        <div>
+          <h3 style="margin:0;font-size:1.1rem">📋 My Appointments</h3>
+          <div style="font-size:0.78rem;color:var(--text-light);margin-top:2px">Your booking history</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="loadMyAppointments()">🔄 Refresh</button>
+      </div>
+      <div id="myApptsList" style="padding:1.5rem;display:grid;gap:1rem">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo"><span style="font-size:1.5rem">🏥</span> AI Digital Doctor</div>
+      <p>Your intelligent AI-powered healthcare companion available 24/7.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul class="footer-links">
+        <li><a href="medicine.html">💊 Medicine Recommendation</a></li>
+        <li><a href="appointment.html">👨‍⚕️ Book Appointment</a></li>
+        <li><a href="hospital.html">🏥 Find Hospital</a></li>
+        <li><a href="blood-donation.html">🩸 Blood Donation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="footer-contact-item"><span class="contact-icon">📧</span><span>aidigitaldoctor@health.com</span></div>
+      <div class="footer-contact-item"><span class="contact-icon">📞</span><span>+91 98765 43210</span></div>
+    </div>
+  </div>
+  <div style="padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+    © 2024 AI Digital Doctor. All rights reserved.
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/profile-panel.js"></script>
+<script src="js/appointment.js"></script>
+</body>
+</html>

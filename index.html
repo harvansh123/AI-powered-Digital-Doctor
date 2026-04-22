@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Digital Doctor - Smart Healthcare Platform</title>
+  <meta name="description"
+    content="AI-Powered Digital Doctor — Get intelligent symptom analysis, medicine recommendations, book appointments, find hospitals and donate blood." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">🏥</div>
+        <span>AI Digital Doctor</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+        <a href="abstract.html">Abstract</a>
+        <div class="nav-dropdown">
+          <a href="#" onclick="return false" style="display:flex;align-items:center;gap:4px;">
+            Categories <span style="font-size:0.7rem;">▾</span>
+          </a>
+          <div class="nav-dropdown-menu">
+            <a href="medicine.html"><span class="icon">💊</span> Medicine Recommendation</a>
+            <a href="appointment.html"><span class="icon">👨‍⚕️</span> Doctor Appointment</a>
+            <a href="hospital.html"><span class="icon">🏥</span> Nearest Hospital</a>
+            <a href="blood-donation.html"><span class="icon">🩸</span> Blood Donation</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+        <a href="register.html" class="btn-nav-signup">Sign Up</a>
+      </div>
+
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-decoration">
+      <div class="hero-blob hero-blob-1"></div>
+      <div class="hero-blob hero-blob-2"></div>
+      <div class="hero-blob hero-blob-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          AI-Powered Healthcare Platform
+        </div>
+        <h1>Your Smart<br /><span class="gradient-text">Digital Doctor</span><br />Always Available</h1>
+        <p>Get instant AI-powered symptom analysis, personalized medicine recommendations, and connect with healthcare
+          professionals — all in one intelligent platform.</p>
+        <div class="hero-actions">
+          <a href="medicine.html" class="btn btn-primary btn-lg">
+            🩺 Start Diagnosis
+          </a>
+          <a href="abstract.html" class="btn btn-outline btn-lg">
+            📄 Learn More
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value">2.4M+</div>
+            <div class="hero-stat-label">Patients Helped</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">97%</div>
+            <div class="hero-stat-label">AI Accuracy</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">500+</div>
+            <div class="hero-stat-label">Expert Doctors</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">24/7</div>
+            <div class="hero-stat-label">Always Online</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-doctor-card">
+          <div class="hero-doctor-img-wrap">
+            <img src="assets/ai-doctor-female.jpg" alt="AI Female Doctor — AI Digital Doctor" class="hero-doctor-img" />
+          </div>
+          <div class="hero-doctor-badge">
+            <span class="hero-doctor-badge-dot"></span>
+            <span>AI Doctor Online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+     CATEGORY CARDS
+═══════════════════════════════════════════════════ -->
+  <section class="section category-section" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">🚀 Our Services</span>
+        <h2>Everything You Need for Your Health</h2>
+        <p>Choose from our comprehensive suite of AI-powered healthcare services designed to put your health first.</p>
+      </div>
+      <div class="grid grid-4">
+
+        <a href="medicine.html" class="category-card cat-blue">
+          <div class="cat-icon">💊</div>
+          <h3>Medicine Recommendation</h3>
+          <p>AI analyzes your symptoms and recommends appropriate medicines with precautions</p>
+          <div class="cat-arrow">→</div>
+        </a>
+
+        <a href="appointment.html" class="category-card cat-green">
+          <div class="cat-icon">👨‍⚕️</div>
+          <h3>Doctor Appointment</h3>
+          <p>Book appointments with specialist doctors at your preferred time slot</p>
+          <div class="cat-arrow">→</div>
+        </a>
+
+        <a href="hospital.html" class="category-card cat-purple">
+          <div class="cat-icon">🏥</div>
+          <h3>Nearest Hospital</h3>
+          <p>Find hospitals near your location with real-time directions and contact info</p>
+          <div class="cat-arrow">→</div>
+        </a>
+
+        <a href="blood-donation.html" class="category-card cat-red">
+          <div class="cat-icon">🩸</div>
+          <h3>Blood Donation</h3>
+          <p>Connect blood donors with those in need — save lives through voluntary donation</p>
+          <div class="cat-arrow">→</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════════════════ -->
+  <section class="section" style="background:linear-gradient(135deg,#eff6ff,#f0f9ff)">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">⚡ How It Works</span>
+        <h2>Get Medical Guidance in 3 Simple Steps</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-body" style="text-align:center">
+            <div
+              style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.25rem;box-shadow:0 8px 24px rgba(29,78,216,0.3)">
+              1</div>
+            <h3>Describe Symptoms</h3>
+            <p>Type or speak your symptoms using our voice-enabled input. Be as specific as possible for better results.
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body" style="text-align:center">
+            <div
+              style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.25rem;box-shadow:0 8px 24px rgba(14,165,233,0.3)">
+              2</div>
+            <h3>AI Analysis</h3>
+            <p>Our advanced AI model processes your symptoms using NLP to identify possible conditions accurately.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body" style="text-align:center">
+            <div
+              style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.25rem;box-shadow:0 8px 24px rgba(16,185,129,0.3)">
+              3</div>
+            <h3>Get Recommendations</h3>
+            <p>Receive detailed medicine recommendations, precautions, and specialist doctor suggestions instantly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+     FEATURES SECTION
+═══════════════════════════════════════════════════ -->
+  <section class="section" style="background:white">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">✨ Features</span>
+        <h2>Powered by Cutting-Edge AI Technology</h2>
+        <p>Our platform combines advanced AI, real-time data and expert medical knowledge for the best healthcare
+          experience.</p>
+      </div>
+      <div class="grid grid-3">
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <div
+            style="width:48px;height:48px;border-radius:12px;background:rgba(29,78,216,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+            🧠</div>
+          <div>
+            <h4 style="margin-bottom:6px">NLP Symptom Analysis</h4>
+            <p style="font-size:0.875rem">Natural language processing understands your symptoms in plain English and
+              matches with disease patterns.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <div
+            style="width:48px;height:48px;border-radius:12px;background:rgba(14,165,233,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+            🎤</div>
+          <div>
+            <h4 style="margin-bottom:6px">Voice Input Support</h4>
+            <p style="font-size:0.875rem">Speak your symptoms naturally using Web Speech API — no typing needed,
+              accessibility first.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <div
+            style="width:48px;height:48px;border-radius:12px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+            🔒</div>
+          <div>
+            <h4 style="margin-bottom:6px">HIPAA Compliant</h4>
+            <p style="font-size:0.875rem">Your medical data is encrypted and protected with industry-standard security
+              protocols.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <div
+            style="width:48px;height:48px;border-radius:12px;background:rgba(124,58,237,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+            📍</div>
+          <div>
+            <h4 style="margin-bottom:6px">Location-Based Services</h4>
+            <p style="font-size:0.875rem">Find nearest hospitals and clinics using GPS geolocation for emergency
+              situations.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <div
+            style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+            📅</div>
+          <div>
+            <h4 style="margin-bottom:6px">Smart Appointment System</h4>
+            <p style="font-size:0.875rem">Book, manage and track appointments with specialists in real-time with
+              confirmation notifications.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <div
+            style="width:48px;height:48px;border-radius:12px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+            🩸</div>
+          <div>
+            <h4 style="margin-bottom:6px">Blood Donor Network</h4>
+            <p style="font-size:0.875rem">Connect blood donors with recipients in real-time emergencies with blood type
+              matching system.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+     CTA BANNER
+═══════════════════════════════════════════════════ -->
+  <section class="section"
+    style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8,#0ea5e9);color:white;text-align:center">
+    <div class="container">
+      <h2 style="color:white;margin-bottom:1rem">Ready to Experience AI Healthcare?</h2>
+      <p style="color:rgba(255,255,255,0.85);margin-bottom:2rem">Join millions of users who trust AI Digital Doctor for
+        their healthcare needs.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="register.html" class="btn" style="background:white;color:var(--primary)">🚀 Get Started Free</a>
+        <a href="medicine.html" class="btn"
+          style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3)">🩺 Try
+          Diagnosis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">
+          <span style="font-size:1.5rem">🏥</span>
+          AI Digital Doctor
+        </div>
+        <p>Your intelligent AI-powered healthcare companion. Providing smart medical guidance, connecting patients with
+          doctors, and making healthcare accessible to everyone.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Facebook">📘</a>
+          <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+          <a href="#" class="social-link" aria-label="Instagram">📷</a>
+          <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="medicine.html">💊 Medicine Recommendation</a></li>
+          <li><a href="appointment.html">👨‍⚕️ Book Appointment</a></li>
+          <li><a href="hospital.html">🏥 Find Hospital</a></li>
+          <li><a href="blood-donation.html">🩸 Blood Donation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul class="footer-links">
+          <li><a href="abstract.html">📄 About Project</a></li>
+          <li><a href="register.html">📝 Register</a></li>
+          <li><a href="login.html">🔐 Login</a></li>
+          <li><a href="#hero">🏠 Home</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="footer-contact-item">
+          <span class="contact-icon">📧</span>
+          <span>aidigitaldoctor@health.com</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="contact-icon">📞</span>
+          <span>+91 98765 43210</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="contact-icon">📍</span>
+          <span>Health Innovation Hub, Tech City, India - 400001</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom"
+      style="max-width:1280px;margin:0 auto;padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+      <p>© 2024 AI Digital Doctor. All rights reserved. |
+        <a href="#" style="color:rgba(255,255,255,0.6)">Privacy Policy</a> |
+        <a href="#" style="color:rgba(255,255,255,0.6)">Terms of Service</a> |
+        <a href="#" style="color:rgba(255,255,255,0.6)">Disclaimer</a>
+      </p>
+      <p style="margin-top:6px">⚠️ This platform provides AI-assisted health suggestions only. Always consult a licensed
+        medical professional for proper diagnosis and treatment.</p>
+    </div>
+  </footer>
+
+  <div id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/profile-panel.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — AI Digital Doctor</title>
+  <meta name="description" content="Platform administration dashboard for AI Digital Doctor."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    /* ── Modal ─────────────────────────────────── */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:1rem}
+    .modal-box{background:#fff;border-radius:16px;width:100%;max-width:480px;box-shadow:0 24px 60px rgba(0,0,0,.2);animation:modalIn .25s ease}
+    @keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(10px)}}
+    .modal-header{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .modal-body{padding:1.5rem}
+    .modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-light);line-height:1}
+    /* ── Stat mini-cards ─────────────────────── */
+    .ai-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+    .ai-stat-box{text-align:center;padding:1.1rem;background:#f8fafc;border:1px solid var(--border);border-radius:var(--radius-sm)}
+    .ai-stat-val{font-size:1.7rem;font-weight:800;color:var(--primary)}
+    .ai-stat-label{font-size:0.72rem;color:var(--text-light);margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+    /* ── Section labels ──────────────────────── */
+    .sidebar-section-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);padding:14px 16px 4px;margin-top:4px}
+  </style>
+</head>
+<body class="dashboard-body">
+
+<!-- Mobile Sidebar Toggle -->
+<button class="sidebar-toggle-btn" id="sidebarToggle">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="dashboard-layout">
+
+  <!-- ═══════════════════════════════════
+       SIDEBAR
+  ═══════════════════════════════════ -->
+  <aside class="sidebar" id="adminSidebar" style="background:linear-gradient(180deg,#1a0533,#4c1d95)">
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">🛡️</div>
+      <div>
+        <div class="sidebar-brand-text">AI Digital Doctor</div>
+        <div class="sidebar-brand-sub">Admin Control Panel</div>
+      </div>
+    </div>
+
+    <!-- Admin Info -->
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar admin-user-initials" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">AD</div>
+      <div>
+        <div class="sidebar-user-name admin-user-name">Admin</div>
+        <div class="sidebar-user-role">Platform Administrator</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="sidebar-nav">
+      <div class="sidebar-section-label">Analytics</div>
+      <button class="sidebar-nav-item" id="anav-overview" onclick="switchAdminPanel('overview')">
+        <span class="nav-icon">📊</span> Dashboard Overview
+      </button>
+
+      <div class="sidebar-section-label">Management</div>
+      <button class="sidebar-nav-item" id="anav-approvals" onclick="switchAdminPanel('approvals')">
+        <span class="nav-icon">👨‍⚕️</span> Doctor Approvals
+        <span class="nav-badge" id="approvalBadge" style="display:none">0</span>
+      </button>
+      <button class="sidebar-nav-item" id="anav-users" onclick="switchAdminPanel('users')">
+        <span class="nav-icon">👥</span> User Management
+      </button>
+      <button class="sidebar-nav-item" id="anav-appointments" onclick="switchAdminPanel('appointments')">
+        <span class="nav-icon">📅</span> All Appointments
+      </button>
+      <button class="sidebar-nav-item" id="anav-admins" onclick="switchAdminPanel('admins')">
+        <span class="nav-icon">🛡️</span> Admin Accounts
+      </button>
+      <button class="sidebar-nav-item" id="anav-hospitals" onclick="switchAdminPanel('hospitals')">
+        <span class="nav-icon">🏥</span> Register Hospital
+      </button>
+      <button class="sidebar-nav-item" id="anav-medicines" onclick="switchAdminPanel('medicines')">
+        <span class="nav-icon">💊</span> Medicine Management
+      </button>
+
+      <div class="sidebar-section-label">AI & Content</div>
+      <button class="sidebar-nav-item" id="anav-ai" onclick="switchAdminPanel('ai')">
+        <span class="nav-icon">🤖</span> AI Monitoring
+      </button>
+      <button class="sidebar-nav-item" id="anav-content" onclick="switchAdminPanel('content')">
+        <span class="nav-icon">📋</span> Content Management
+      </button>
+
+      <div class="sidebar-section-label">System</div>
+      <button class="sidebar-nav-item" id="anav-system" onclick="switchAdminPanel('system')">
+        <span class="nav-icon">⚙️</span> System Monitor
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="index.html" class="sidebar-nav-item" style="margin-bottom:4px;color:rgba(255,255,255,0.65)">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+      <button class="sidebar-logout" onclick="adminLogout()">
+        <span class="nav-icon">🚪</span> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════ -->
+  <main class="dashboard-main">
+
+    <!-- Top Bar -->
+    <div class="dashboard-topbar">
+      <div>
+        <div class="dashboard-topbar-title">Admin Dashboard Overview</div>
+        <div style="font-size:0.75rem;color:var(--text-light)" id="adminTopbarDate"></div>
+      </div>
+      <div class="dashboard-topbar-actions">
+        <span style="font-size:0.75rem;background:#faf5ff;color:#7c3aed;border:1px solid #e9d5ff;border-radius:var(--radius-full);padding:4px 12px;font-weight:600">🛡️ Admin Access</span>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-full)">
+          <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;color:white" class="admin-user-initials">AD</div>
+          <span style="font-size:0.85rem;font-weight:500" class="admin-user-name">Admin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <!-- ══════════════════════════════
+           PANEL: OVERVIEW
+      ══════════════════════════════ -->
+      <div class="dash-panel active" id="apanel-overview">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card stat-card-blue">
+            <div class="stat-icon stat-icon-blue">👥</div>
+            <div class="stat-info">
+              <div class="stat-value" id="adminStatPatients">0</div>
+              <div class="stat-label">Total Patients</div>
+              <div class="stat-change stat-change-up">↑ Active users</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card-green">
+            <div class="stat-icon stat-icon-green">👨‍⚕️</div>
+            <div class="stat-info">
+              <div class="stat-value" id="adminStatDoctors">0</div>
+              <div class="stat-label">Approved Doctors</div>
+              <div class="stat-change stat-change-up">↑ On platform</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card-purple">
+            <div class="stat-icon stat-icon-purple">📅</div>
+            <div class="stat-info">
+              <div class="stat-value" id="adminStatAppts">0</div>
+              <div class="stat-label">Total Appointments</div>
+            </div>
+          </div>
+          <div class="stat-card stat-card-orange">
+            <div class="stat-icon stat-icon-orange">⏳</div>
+            <div class="stat-info">
+              <div class="stat-value" id="adminStatPending">0</div>
+              <div class="stat-label">Pending Approvals</div>
+              <div class="stat-change stat-change-down">Needs review</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Column -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>⏳ Pending Doctor Approvals</h3>
+              <button class="action-btn action-btn-primary" onclick="switchAdminPanel('approvals')">View All</button>
+            </div>
+            <div class="dash-card-body" id="overviewPendingDoctors">
+              <div class="loading-overlay"><div class="spinner"></div></div>
+            </div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>📅 Recent Appointments</h3>
+              <button class="action-btn action-btn-primary" onclick="switchAdminPanel('appointments')">View All</button>
+            </div>
+            <div class="dash-card-body" id="overviewRecentApts">
+              <div class="loading-overlay"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Breakdown -->
+        <div class="dash-card" style="margin-bottom:1.5rem">
+          <div class="dash-card-header"><h3>📊 Appointment Status Overview</h3></div>
+          <div class="dash-card-body">
+            <div style="display:flex;gap:1rem;flex-wrap:wrap" id="adminBreakdownStats"></div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>⚡ Quick Actions</h3></div>
+          <div class="dash-card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem">
+              <button onclick="switchAdminPanel('approvals')" style="padding:1.25rem;border:2px solid #e9d5ff;border-radius:var(--radius);background:#faf5ff;cursor:pointer;text-align:center;transition:var(--transition)" onmouseover="this.style.background='#7c3aed';this.style.color='white'" onmouseout="this.style.background='#faf5ff';this.style.color='inherit'">
+                <div style="font-size:1.5rem;margin-bottom:6px">👨‍⚕️</div>
+                <div style="font-size:0.8rem;font-weight:600">Approve Doctors</div>
+              </button>
+              <button onclick="switchAdminPanel('users')" style="padding:1.25rem;border:2px solid #bfdbfe;border-radius:var(--radius);background:#eff6ff;cursor:pointer;text-align:center;transition:var(--transition)" onmouseover="this.style.background='#1d4ed8';this.style.color='white'" onmouseout="this.style.background='#eff6ff';this.style.color='inherit'">
+                <div style="font-size:1.5rem;margin-bottom:6px">👥</div>
+                <div style="font-size:0.8rem;font-weight:600">Manage Users</div>
+              </button>
+              <button onclick="switchAdminPanel('admins')" style="padding:1.25rem;border:2px solid #e9d5ff;border-radius:var(--radius);background:#faf5ff;cursor:pointer;text-align:center;transition:var(--transition)" onmouseover="this.style.background='#7c3aed';this.style.color='white'" onmouseout="this.style.background='#faf5ff';this.style.color='inherit'">
+                <div style="font-size:1.5rem;margin-bottom:6px">🛡️</div>
+                <div style="font-size:0.8rem;font-weight:600">Admin Accounts</div>
+              </button>
+              <button onclick="switchAdminPanel('appointments')" style="padding:1.25rem;border:2px solid #bbf7d0;border-radius:var(--radius);background:#f0fdf4;cursor:pointer;text-align:center;transition:var(--transition)" onmouseover="this.style.background='#059669';this.style.color='white'" onmouseout="this.style.background='#f0fdf4';this.style.color='inherit'">
+                <div style="font-size:1.5rem;margin-bottom:6px">📅</div>
+                <div style="font-size:0.8rem;font-weight:600">Appointments</div>
+              </button>
+              <button onclick="switchAdminPanel('ai')" style="padding:1.25rem;border:2px solid #fde68a;border-radius:var(--radius);background:#fffbeb;cursor:pointer;text-align:center;transition:var(--transition)" onmouseover="this.style.background='#d97706';this.style.color='white'" onmouseout="this.style.background='#fffbeb';this.style.color='inherit'">
+                <div style="font-size:1.5rem;margin-bottom:6px">🤖</div>
+                <div style="font-size:0.8rem;font-weight:600">AI Monitor</div>
+              </button>
+              <button onclick="switchAdminPanel('medicines')" style="padding:1.25rem;border:2px solid #e9d5ff;border-radius:var(--radius);background:#faf5ff;cursor:pointer;text-align:center;transition:var(--transition)" onmouseover="this.style.background='#7c3aed';this.style.color='white'" onmouseout="this.style.background='#faf5ff';this.style.color='inherit'">
+                <div style="font-size:1.5rem;margin-bottom:6px">💊</div>
+                <div style="font-size:0.8rem;font-weight:600">Medicines</div>
+              </button>
+              <button onclick="switchAdminPanel('system')" style="padding:1.25rem;border:2px solid #e2e8f0;border-radius:var(--radius);background:#f8fafc;cursor:pointer;text-align:center;transition:var(--transition)" onmouseover="this.style.background='#475569';this.style.color='white'" onmouseout="this.style.background='#f8fafc';this.style.color='inherit'">
+                <div style="font-size:1.5rem;margin-bottom:6px">⚙️</div>
+                <div style="font-size:0.8rem;font-weight:600">System Check</div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: DOCTOR APPROVALS
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-approvals">
+        <div class="alert alert-warning" style="display:flex;gap:10px;margin-bottom:1.5rem">
+          <span>⚠️</span>
+          <span>Review each doctor's credentials carefully before approving. Approved doctors become immediately visible to patients.</span>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header" style="flex-wrap:wrap;gap:10px">
+            <h3>👨‍⚕️ All Registered Doctors</h3>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span id="approvalCountBadge" class="badge badge-warning">0 pending</span>
+              <button id="docFilter-all"      onclick="filterDoctors('all')"      style="padding:5px 14px;border-radius:var(--radius-full);border:1px solid var(--border);background:var(--primary);color:white;font-size:0.78rem;cursor:pointer;font-weight:700;transition:var(--transition)">All</button>
+              <button id="docFilter-pending"  onclick="filterDoctors('pending')"  style="padding:5px 14px;border-radius:var(--radius-full);border:1px solid var(--border);background:var(--bg);color:var(--text-medium);font-size:0.78rem;cursor:pointer;font-weight:500;transition:var(--transition)">⏳ Pending</button>
+              <button id="docFilter-approved" onclick="filterDoctors('approved')" style="padding:5px 14px;border-radius:var(--radius-full);border:1px solid var(--border);background:var(--bg);color:var(--text-medium);font-size:0.78rem;cursor:pointer;font-weight:500;transition:var(--transition)">✅ Approved</button>
+              <button id="docFilter-rejected" onclick="filterDoctors('rejected')" style="padding:5px 14px;border-radius:var(--radius-full);border:1px solid var(--border);background:var(--bg);color:var(--text-medium);font-size:0.78rem;cursor:pointer;font-weight:500;transition:var(--transition)">🚫 Rejected</button>
+              <button onclick="loadAllDoctors()" class="action-btn action-btn-primary" style="font-size:0.78rem">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="dash-card-body" id="allDoctorsList">
+            <div class="loading-overlay"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: USER MANAGEMENT
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-users">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>👥 All Patients</h3>
+            <div style="display:flex;gap:8px">
+              <input class="form-control" id="userSearch" type="search" placeholder="Search by name or phone…" oninput="searchUsers()" style="width:230px;padding:8px 12px;font-size:0.85rem"/>
+            </div>
+          </div>
+          <div class="dash-table-wrap">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Patient</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-light)">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: ALL APPOINTMENTS
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-appointments">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>📅 All Platform Appointments</h3>
+            <input class="form-control" id="adminAptSearch" type="search" placeholder="Search patient…" oninput="searchAdminApts()" style="width:200px;padding:8px 12px;font-size:0.85rem"/>
+          </div>
+          <div class="dash-table-wrap">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Ref ID</th>
+                  <th>Patient</th>
+                  <th>Doctor</th>
+                  <th>Date &amp; Time</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminAptsTableBody">
+                <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-light)">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: ADMIN ACCOUNTS
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-admins">
+        <div class="alert" style="display:flex;gap:10px;margin-bottom:1.5rem;background:#faf5ff;border:1px solid #e9d5ff;border-radius:var(--radius-sm);padding:14px 16px">
+          <span>🔒</span>
+          <span style="font-size:0.85rem;color:#6d28d9">Admin accounts have full platform access. Admins are created <strong>only via Supabase Auth manually</strong> — no frontend registration is allowed. Contact your system administrator to create new admin accounts.</span>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>🛡️ Platform Administrators</h3>
+            <span style="font-size:0.78rem;background:#fef9c3;border:1px solid #fde047;color:#713f12;border-radius:var(--radius-full);padding:4px 12px;font-weight:600">⚠️ Created via Supabase only</span>
+          </div>
+          <div class="dash-table-wrap">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Admin</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminsTableBody">
+                <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-light)">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: HOSPITAL MANAGEMENT
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-hospitals">
+        <div class="alert" style="display:flex;gap:10px;margin-bottom:1.5rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:14px 16px">
+          <span>🏥</span>
+          <span style="font-size:0.85rem;color:#166534">Hospitals registered here appear on the <strong>Nearby Hospital</strong> page for all patients. Only admins can add or remove hospitals.</span>
+        </div>
+
+        <!-- Add Hospital Form -->
+        <div class="dash-card" style="margin-bottom:1.5rem">
+          <div class="dash-card-header"><h3>➕ Register New Hospital</h3></div>
+          <div class="dash-card-body">
+            <div id="hospitalFormError" class="alert alert-danger" style="display:none;margin-bottom:1rem">
+              <span class="alert-icon">❌</span><span id="hospitalFormErrMsg"></span>
+            </div>
+            <form id="hospitalForm" onsubmit="addHospital(event)">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label required">Hospital Name</label>
+                  <input id="hName" class="form-control" type="text" placeholder="e.g. Apollo Hospital" required/>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label required">City</label>
+                  <input id="hCity" class="form-control" type="text" placeholder="e.g. Mumbai" required/>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:1rem">
+                <label class="form-label required">Address</label>
+                <input id="hAddress" class="form-control" type="text" placeholder="Full address" required/>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem;margin-bottom:1rem">
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Phone Number</label>
+                  <input id="hPhone" class="form-control" type="tel" placeholder="+91 98765 43210"/>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">State</label>
+                  <input id="hState" class="form-control" type="text" placeholder="e.g. Maharashtra"/>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Location / Landmark</label>
+                  <input id="hLocation" class="form-control" type="text" placeholder="Near railway station"/>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Emergency Available</label>
+                  <select id="hEmergency" class="form-control">
+                    <option value="false">No</option>
+                    <option value="true">Yes — 24/7 Emergency</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Latitude <span style="font-size:0.75rem;color:var(--text-light);font-weight:400">(for GPS distance sorting)</span></label>
+                  <input id="hLatitude" class="form-control" type="number" step="any" min="-90" max="90" placeholder="e.g. 19.0760"/>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Longitude <span style="font-size:0.75rem;color:var(--text-light);font-weight:400">(for GPS distance sorting)</span></label>
+                  <input id="hLongitude" class="form-control" type="number" step="any" min="-180" max="180" placeholder="e.g. 72.8777"/>
+                </div>
+              </div>
+              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:0.8rem;color:#166534;margin-bottom:1rem">
+                💡 <strong>Tip:</strong> Find Latitude &amp; Longitude by right-clicking the hospital location on <a href="https://maps.google.com" target="_blank" style="color:#166534;font-weight:600">Google Maps</a> → "What's here?"
+              </div>
+              <button type="submit" class="btn btn-primary" id="addHospitalBtn">🏥 Register Hospital</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Hospitals List -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>📋 Registered Hospitals</h3>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span id="hospitalCountBadge" class="badge badge-success">0 hospitals</span>
+              <button class="action-btn action-btn-primary" onclick="loadHospitals()">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="dash-card-body" id="hospitalsList">
+            <div class="loading-overlay"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: AI MONITORING
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-ai">
+        <!-- AI Stat Row -->
+        <div class="ai-stat-row">
+          <div class="ai-stat-box">
+            <div class="ai-stat-val" id="aiTotalQueries">—</div>
+            <div class="ai-stat-label">Total AI Queries</div>
+          </div>
+          <div class="ai-stat-box">
+            <div class="ai-stat-val" id="aiTodayQueries" style="color:#10b981">—</div>
+            <div class="ai-stat-label">Queries Today</div>
+          </div>
+          <div class="ai-stat-box">
+            <div class="ai-stat-val" id="aiUniqueUsers" style="color:#7c3aed">—</div>
+            <div class="ai-stat-label">Unique Users</div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>🤖 Symptom Query History</h3>
+            <button class="action-btn action-btn-primary" onclick="loadAILogs()">🔄 Refresh</button>
+          </div>
+          <div class="dash-card-body" id="aiLogsContainer">
+            <div class="loading-overlay"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- AI Feature Summary -->
+        <div class="dash-card" style="margin-top:1.5rem">
+          <div class="dash-card-header"><h3>🧠 AI Features Status</h3></div>
+          <div class="dash-card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem">
+              <div style="padding:16px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--radius-sm)">
+                <div style="font-size:1.3rem;margin-bottom:6px">🔍</div>
+                <div style="font-weight:600;font-size:0.85rem">Symptom Checker</div>
+                <div style="font-size:0.75rem;color:#1d4ed8;margin-top:3px">● Active</div>
+              </div>
+              <div style="padding:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm)">
+                <div style="font-size:1.3rem;margin-bottom:6px">💊</div>
+                <div style="font-weight:600;font-size:0.85rem">Medicine AI</div>
+                <div style="font-size:0.75rem;color:#166534;margin-top:3px">● Active</div>
+              </div>
+              <div style="padding:16px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:var(--radius-sm)">
+                <div style="font-size:1.3rem;margin-bottom:6px">📋</div>
+                <div style="font-weight:600;font-size:0.85rem">Diagnosis Logger</div>
+                <div style="font-size:0.75rem;color:#7c3aed;margin-top:3px">● Active</div>
+              </div>
+              <div style="padding:16px;background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm)">
+                <div style="font-size:1.3rem;margin-bottom:6px">🏥</div>
+                <div style="font-weight:600;font-size:0.85rem">Hospital Finder</div>
+                <div style="font-size:0.75rem;color:#92400e;margin-top:3px">● Active</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: CONTENT MANAGEMENT
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-content">
+        <!-- Platform Stats -->
+        <div class="dash-card" style="margin-bottom:1.5rem">
+          <div class="dash-card-header"><h3>📊 Platform Summary</h3></div>
+          <div class="dash-card-body">
+            <div style="display:flex;gap:1rem;flex-wrap:wrap" id="platformStatsSummary">
+              <div class="loading-overlay"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medical Categories -->
+        <div class="dash-card" style="margin-bottom:1.5rem">
+          <div class="dash-card-header">
+            <h3>🏥 Medical Specializations</h3>
+            <span class="badge badge-success">12 Active</span>
+          </div>
+          <div class="dash-card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem" id="medicalCategoriesGrid">
+              <div class="loading-overlay"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Services -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+          <div class="dash-card">
+            <div class="dash-card-header"><h3>💊 Medicine Database</h3></div>
+            <div class="dash-card-body">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:var(--radius-sm)">
+                  <div>
+                    <div style="font-weight:600;font-size:0.85rem">Medicine Catalogue</div>
+                    <div style="font-size:0.75rem;color:var(--text-light)">AI-searchable medicine list</div>
+                  </div>
+                  <span class="status-pill status-approved">● Live</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:var(--radius-sm)">
+                  <div>
+                    <div style="font-weight:600;font-size:0.85rem">Drug Interactions</div>
+                    <div style="font-size:0.75rem;color:var(--text-light)">Safety cross-reference</div>
+                  </div>
+                  <span class="status-pill status-approved">● Live</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:var(--radius-sm)">
+                  <div>
+                    <div style="font-weight:600;font-size:0.85rem">Dosage Calculator</div>
+                    <div style="font-size:0.75rem;color:var(--text-light)">Weight-based dosing AI</div>
+                  </div>
+                  <span class="status-pill status-approved">● Live</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-card">
+            <div class="dash-card-header"><h3>🌐 Platform Features</h3></div>
+            <div class="dash-card-body">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:var(--radius-sm)">
+                  <div>
+                    <div style="font-weight:600;font-size:0.85rem">Appointment Booking</div>
+                    <div style="font-size:0.75rem;color:var(--text-light)">Patient-Doctor scheduling</div>
+                  </div>
+                  <span class="status-pill status-approved">● Live</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:var(--radius-sm)">
+                  <div>
+                    <div style="font-weight:600;font-size:0.85rem">Blood Donation</div>
+                    <div style="font-size:0.75rem;color:var(--text-light)">Donor-recipient matching</div>
+                  </div>
+                  <span class="status-pill status-approved">● Live</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:var(--radius-sm)">
+                  <div>
+                    <div style="font-weight:600;font-size:0.85rem">Hospital Locator</div>
+                    <div style="font-size:0.75rem;color:var(--text-light)">Location-based search</div>
+                  </div>
+                  <span class="status-pill status-approved">● Live</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: SYSTEM MONITOR
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-system">
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem">
+          <div>
+            <!-- System Status -->
+            <div class="dash-card" style="margin-bottom:1.5rem">
+              <div class="dash-card-header">
+                <h3>⚙️ System Status</h3>
+                <button class="action-btn action-btn-primary" onclick="checkSystemHealth()">🔄 Refresh</button>
+              </div>
+              <div class="dash-card-body">
+                <div style="display:flex;flex-direction:column;gap:14px">
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-weight:600;min-width:140px">Database:</span>
+                    <span id="systemStatus"><span class="status-pill status-pending">Checking…</span></span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-weight:600;min-width:140px">Supabase URL:</span>
+                    <code style="font-size:0.78rem;background:#f1f5f9;padding:3px 8px;border-radius:4px">xlpaiyjwaxhbnospxwjt.supabase.co</code>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-weight:600;min-width:140px">Auth Provider:</span>
+                    <span class="status-pill status-approved">● Supabase Auth</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-weight:600;min-width:140px">Realtime:</span>
+                    <span class="status-pill status-confirmed" id="socketStatus">● Connecting…</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-weight:600;min-width:140px">Edge Functions:</span>
+                    <span class="status-pill status-approved">● create-admin-user</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-weight:600;min-width:140px">Region:</span>
+                    <span style="font-size:0.85rem">🇮🇳 ap-south-1 (Mumbai)</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span style="font-weight:600;min-width:140px">RLS:</span>
+                    <span class="status-pill status-approved">● Enabled on all tables</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Platform Services Grid -->
+            <div class="dash-card">
+              <div class="dash-card-header"><h3>🏥 Platform Services</h3></div>
+              <div class="dash-card-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <div style="padding:14px;background:#eff6ff;border-radius:var(--radius-sm);border:1px solid #bfdbfe">
+                    <div style="font-size:1.25rem;margin-bottom:4px">💊</div>
+                    <div style="font-weight:600;font-size:0.85rem">Medicine AI</div>
+                    <div style="font-size:0.75rem;color:#1d4ed8">Active</div>
+                  </div>
+                  <div style="padding:14px;background:#f0fdf4;border-radius:var(--radius-sm);border:1px solid #bbf7d0">
+                    <div style="font-size:1.25rem;margin-bottom:4px">📅</div>
+                    <div style="font-weight:600;font-size:0.85rem">Appointments</div>
+                    <div style="font-size:0.75rem;color:#166534">Active</div>
+                  </div>
+                  <div style="padding:14px;background:#faf5ff;border-radius:var(--radius-sm);border:1px solid #e9d5ff">
+                    <div style="font-size:1.25rem;margin-bottom:4px">🏥</div>
+                    <div style="font-weight:600;font-size:0.85rem">Hospital Finder</div>
+                    <div style="font-size:0.75rem;color:#7c3aed">Active</div>
+                  </div>
+                  <div style="padding:14px;background:#fff1f2;border-radius:var(--radius-sm);border:1px solid #fecdd3">
+                    <div style="font-size:1.25rem;margin-bottom:4px">🩸</div>
+                    <div style="font-weight:600;font-size:0.85rem">Blood Donation</div>
+                    <div style="font-size:0.75rem;color:#be123c">Active</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Log -->
+          <div class="dash-card" style="height:fit-content">
+            <div class="dash-card-header"><h3>📋 Activity Log</h3></div>
+            <div class="dash-card-body" id="activityLog" style="max-height:500px;overflow-y:auto">
+              <div class="loading-overlay"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DB Summary -->
+        <div class="dash-card" style="margin-top:1.5rem">
+          <div class="dash-card-header"><h3>🗄️ Database Summary</h3></div>
+          <div class="dash-card-body">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem">
+              <div style="text-align:center;padding:1rem;background:#f8fafc;border-radius:var(--radius-sm);border:1px solid var(--border)">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--primary)" id="adminStatPatients2">—</div>
+                <div style="font-size:0.75rem;color:var(--text-light);margin-top:4px">PATIENTS</div>
+              </div>
+              <div style="text-align:center;padding:1rem;background:#f8fafc;border-radius:var(--radius-sm);border:1px solid var(--border)">
+                <div style="font-size:1.5rem;font-weight:800;color:#10b981" id="adminStatDoctors2">—</div>
+                <div style="font-size:0.75rem;color:var(--text-light);margin-top:4px">DOCTORS</div>
+              </div>
+              <div style="text-align:center;padding:1rem;background:#f8fafc;border-radius:var(--radius-sm);border:1px solid var(--border)">
+                <div style="font-size:1.5rem;font-weight:800;color:#7c3aed" id="adminStatAppts2">—</div>
+                <div style="font-size:0.75rem;color:var(--text-light);margin-top:4px">APPOINTMENTS</div>
+              </div>
+              <div style="text-align:center;padding:1rem;background:#f8fafc;border-radius:var(--radius-sm);border:1px solid var(--border)">
+                <div style="font-size:1.5rem;font-weight:800;color:#f59e0b" id="adminStatPending2">—</div>
+                <div style="font-size:0.75rem;color:var(--text-light);margin-top:4px">PENDING</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           PANEL: MEDICINE DATABASE
+      ══════════════════════════════ -->
+      <div class="dash-panel" id="apanel-medicines">
+
+        <!-- Add Medicine Form -->
+        <div class="dash-card" style="margin-bottom:1.5rem">
+          <div class="dash-card-header">
+            <h3>➕ Add Medicine to Database</h3>
+            <span style="font-size:0.8rem;color:var(--text-light)">Admin controlled · All users can search</span>
+          </div>
+          <div class="dash-card-body">
+            <form id="medicineForm" onsubmit="addMedicine(event)">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label required">Medicine Name</label>
+                  <input id="mName" class="form-control" type="text" placeholder="e.g. Paracetamol" required/>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label required">Used For</label>
+                  <input id="mUsedFor" class="form-control" type="text" placeholder="Fever, headache, pain" required/>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Age Group</label>
+                  <input id="mAgeGroup" class="form-control" type="text" placeholder="Adults 18+, All ages, Children 6+"/>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Dosage</label>
+                  <input id="mDosage" class="form-control" type="text" placeholder="500mg every 6 hours"/>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Side Effects</label>
+                  <textarea id="mSideEffects" class="form-control" rows="2" placeholder="Nausea, drowsiness…"></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                  <label class="form-label">Precautions</label>
+                  <textarea id="mPrecautions" class="form-control" rows="2" placeholder="Avoid alcohol, do not use in pregnancy…"></textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="addMedicineBtn">💊 Add Medicine</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Unknown Medicines Review -->
+        <div class="dash-card" style="margin-bottom:1.5rem">
+          <div class="dash-card-header">
+            <h3>🔍 Unknown Medicines (Flagged by Scanner)</h3>
+            <button class="action-btn action-btn-primary" onclick="loadUnknownMedicines()">🔄 Refresh</button>
+          </div>
+          <div class="dash-card-body" id="unknownMedicinesList">
+            <div class="loading-overlay"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Medicines List -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>📋 All Medicines in Database</h3>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span id="medicineTotalBadge" class="badge badge-success">0 medicines</span>
+              <button class="action-btn action-btn-primary" onclick="loadMedicines()">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="dash-card-body" id="medicinesList">
+            <div class="loading-overlay"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /dashboard-content -->
+  </main>
+</div>
+
+<!-- Create Admin Modal REMOVED for security (Part 7)
+     Admin accounts must be created directly via Supabase Auth only. -->
+
+<div id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin-dashboard.js"></script>
+<script>
+// Set topbar date
+document.getElementById('adminTopbarDate').textContent = new Date().toLocaleDateString('en-IN', {
+  weekday:'long', day:'numeric', month:'long', year:'numeric'
+});
+</script>
+</body>
+</html>

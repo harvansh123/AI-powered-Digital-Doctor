@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — AI Digital Doctor</title>
+  <meta name="description" content="Create your AI Digital Doctor account as a Patient or Doctor."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body style="background:linear-gradient(135deg,#0f172a,#1e3a8a,#0c4a6e);min-height:100vh;padding-top:0">
+
+<div style="min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:3rem 1rem 2rem">
+  <div style="width:100%;max-width:540px">
+
+    <!-- Logo -->
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-full);padding:10px 20px;text-decoration:none">
+        <span style="font-size:1.3rem">🏥</span>
+        <span style="font-weight:800;color:white">AI Digital Doctor</span>
+      </a>
+    </div>
+
+    <div class="auth-card" style="border-radius:var(--radius-lg)">
+      <div class="auth-card-header" style="text-align:center;padding:2rem 2rem 1rem">
+        <div style="font-size:2.2rem;margin-bottom:0.5rem">📝</div>
+        <h2 style="font-size:1.4rem">Create Account</h2>
+        <p style="color:var(--text-light);font-size:0.875rem;margin-top:4px">Join AI Digital Doctor Platform</p>
+      </div>
+      <div class="auth-card-body" style="padding:1.5rem 2rem 2rem">
+
+        <!-- Role Selector Tabs -->
+        <div class="role-tab-bar" style="margin-bottom:1.5rem">
+          <button class="role-tab-btn active" id="tabPatientBtn" onclick="switchRegisterRole('patient')">
+            🩺 Patient
+          </button>
+          <button class="role-tab-btn" id="tabDoctorBtn" onclick="switchRegisterRole('doctor')">
+            👨‍⚕️ Doctor
+          </button>
+        </div>
+
+        <!-- Error -->
+        <div id="registerError" class="alert alert-danger" style="display:none">
+          <span class="alert-icon">❌</span>
+          <span id="registerErrorMsg">Registration failed. Please try again.</span>
+        </div>
+
+        <!-- ═══ PATIENT REGISTRATION TAB ═══ -->
+        <div class="role-tab-panel active" id="tabPatient">
+          <form id="registerForm" onsubmit="handleRegister(event)">
+            <div class="grid grid-2" style="gap:1rem">
+              <div class="form-group">
+                <label class="form-label required" for="regFirstName">First Name</label>
+                <input id="regFirstName" class="form-control" type="text" placeholder="John" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" for="regLastName">Last Name</label>
+                <input id="regLastName" class="form-control" type="text" placeholder="Doe" required/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="regEmail">Email Address</label>
+              <input id="regEmail" class="form-control" type="email" placeholder="your@email.com" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="regPhone">Phone Number</label>
+              <input id="regPhone" class="form-control" type="tel" placeholder="+91 98765 43210" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="regPassword">Password</label>
+              <div style="position:relative">
+                <input id="regPassword" class="form-control" type="password" placeholder="Min. 8 characters" required/>
+                <button type="button" onclick="togglePassword('regPassword','eyeReg')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-light)" id="eyeReg">👁️</button>
+              </div>
+              <div id="pwStrength" style="margin-top:6px;height:4px;background:var(--border);border-radius:99px;overflow:hidden">
+                <div id="pwStrengthBar" style="height:100%;width:0%;transition:all 0.3s;border-radius:99px"></div>
+              </div>
+              <p id="pwStrengthLabel" class="form-hint"></p>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="regConfirm">Confirm Password</label>
+              <input id="regConfirm" class="form-control" type="password" placeholder="Repeat password" required/>
+            </div>
+            <div class="form-group">
+              <label style="display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;cursor:pointer">
+                <input type="checkbox" id="regConsent" required style="width:16px;height:16px;accent-color:var(--primary);margin-top:2px;flex-shrink:0"/>
+                I agree to the <a href="terms.html" target="_blank" style="color:var(--primary);font-weight:600">Terms &amp; Conditions</a> and <a href="terms.html" target="_blank" style="color:var(--primary)">Privacy Policy</a> of AI Digital Doctor.
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%" id="registerBtn">
+              🚀 Create Patient Account
+            </button>
+          </form>
+        </div>
+
+        <!-- ═══ DOCTOR REGISTRATION TAB ═══ -->
+        <div class="role-tab-panel" id="tabDoctor">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:1.25rem;font-size:0.82rem;color:#166534;display:flex;gap:8px;align-items:flex-start">
+            <span>ℹ️</span>
+            <span>Doctor accounts require <strong>Admin approval</strong> after registration. You'll be notified once approved.</span>
+          </div>
+          <form id="doctorRegisterForm" onsubmit="handleDoctorRegister(event)">
+            <div class="grid grid-2" style="gap:1rem">
+              <div class="form-group">
+                <label class="form-label required" for="docFirstName">First Name</label>
+                <input id="docFirstName" class="form-control" type="text" placeholder="Dr. First" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" for="docLastName">Last Name</label>
+                <input id="docLastName" class="form-control" type="text" placeholder="Last Name" required/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="docEmail">Email Address</label>
+              <input id="docEmail" class="form-control" type="email" placeholder="doctor@hospital.com" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="docPhone">Phone Number</label>
+              <input id="docPhone" class="form-control" type="tel" placeholder="+91 98765 43210" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="docSpec">Specialization</label>
+              <select id="docSpec" class="form-control" required>
+                <option value="">Select Specialization</option>
+                <option>General Physician</option>
+                <option>Cardiologist</option>
+                <option>Dermatologist</option>
+                <option>Neurologist</option>
+                <option>Pediatrician</option>
+                <option>Orthopedist</option>
+                <option>Psychiatrist</option>
+                <option>ENT Specialist</option>
+                <option>Gastroenterologist</option>
+                <option>Pulmonologist</option>
+                <option>Gynecologist</option>
+                <option>Oncologist</option>
+                <option>Ophthalmologist</option>
+                <option>Urologist</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="grid grid-2" style="gap:1rem">
+              <div class="form-group">
+                <label class="form-label required" for="docExperience">Experience</label>
+                <input id="docExperience" class="form-control" type="text" placeholder="e.g. 10 years" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" for="docFee">Consultation Fee (₹)</label>
+                <input id="docFee" class="form-control" type="number" placeholder="500" min="0" required/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="docHospital">Hospital / Clinic</label>
+              <input id="docHospital" class="form-control" type="text" placeholder="Apollo Hospital, Mumbai" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="docBio">Short Bio <span style="font-weight:400;color:var(--text-light)">(optional)</span></label>
+              <textarea id="docBio" class="form-control" rows="2" placeholder="Brief description of your expertise..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="docPassword">Password</label>
+              <div style="position:relative">
+                <input id="docPassword" class="form-control" type="password" placeholder="Min. 8 characters" required/>
+                <button type="button" onclick="togglePassword('docPassword','eyeDoc')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-light)" id="eyeDoc">👁️</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="docConfirm">Confirm Password</label>
+              <input id="docConfirm" class="form-control" type="password" placeholder="Repeat password" required/>
+            </div>
+            <div class="form-group">
+              <label style="display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;cursor:pointer">
+                <input type="checkbox" id="docConsent" required style="width:16px;height:16px;accent-color:var(--primary);margin-top:2px;flex-shrink:0"/>
+                I confirm I am a licensed medical professional and agree to the <a href="terms.html" target="_blank" style="color:var(--primary);font-weight:600">Terms &amp; Conditions</a>.
+              </label>
+            </div>
+            <button type="submit" class="btn btn-accent" style="width:100%;background:linear-gradient(135deg,#059669,#10b981)" id="doctorRegBtn">
+              🏥 Submit for Approval
+            </button>
+          </form>
+        </div>
+
+        <div style="margin-top:1.25rem;text-align:center;font-size:0.875rem;color:var(--text-light)">
+          Already have an account? <a href="login.html" style="color:var(--primary);font-weight:600">Sign in →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+function switchRegisterRole(role) {
+  document.querySelectorAll('.role-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.role-tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tabPatientBtn').classList.toggle('active', role === 'patient');
+  document.getElementById('tabDoctorBtn').classList.toggle('active', role === 'doctor');
+  document.getElementById('tabPatient').classList.toggle('active', role === 'patient');
+  document.getElementById('tabDoctor').classList.toggle('active', role === 'doctor');
+  document.getElementById('registerError').style.display = 'none';
+}
+</script>
+</body>
+</html>

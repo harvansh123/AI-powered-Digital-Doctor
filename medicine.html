@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medicine Recommendation — AI Digital Doctor</title>
+  <meta name="description" content="AI-powered symptom analysis, medicine recommendation, and camera-based medicine scanner."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🏥</div>
+      <span>AI Digital Doctor</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="abstract.html">Abstract</a>
+      <div class="nav-dropdown">
+        <a href="#" onclick="return false" style="display:flex;align-items:center;gap:4px;">Categories <span style="font-size:0.7rem;">▾</span></a>
+        <div class="nav-dropdown-menu">
+          <a href="medicine.html"><span class="icon">💊</span> Medicine Recommendation</a>
+          <a href="appointment.html"><span class="icon">👨‍⚕️</span> Doctor Appointment</a>
+          <a href="hospital.html"><span class="icon">🏥</span> Nearest Hospital</a>
+          <a href="blood-donation.html"><span class="icon">🩸</span> Blood Donation</a>
+        </div>
+      </div>
+    </div>
+    <div class="nav-actions" id="navActions">
+      <a href="login.html" class="btn-nav-login">Sign In</a>
+      <a href="register.html" class="btn-nav-signup">Sign Up</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div style="position:relative;z-index:1">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:white;">💊 AI Diagnosis</span>
+    <h1 style="margin:0.75rem 0 0.5rem">Medicine Recommendation</h1>
+    <p>Describe your symptoms or scan a medicine using your camera for instant AI-powered guidance</p>
+
+    <!-- Scanner button in hero -->
+    <button onclick="openScanner()" style="margin-top:1.25rem;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.4);color:white;padding:10px 24px;border-radius:99px;font-size:0.9rem;font-weight:700;cursor:pointer;backdrop-filter:blur(8px);transition:all 0.2s;display:inline-flex;align-items:center;gap:8px"
+      onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+      📷 Scan Medicine
+    </button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<section class="section">
+  <div class="container">
+
+    <!-- ── MODULE TABS ── -->
+    <div class="tabs" style="margin-bottom:2rem">
+      <button class="tab-btn active" onclick="switchModuleTab('symptoms')" id="tabSymptomBtn">🩺 Symptom Analysis</button>
+      <button class="tab-btn" onclick="switchModuleTab('scanner')" id="tabScannerBtn">📷 Medicine Scanner</button>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         TAB 1: SYMPTOM ANALYSIS (unchanged)
+    ════════════════════════════════════ -->
+    <div id="moduleSymptoms" class="module-tab-panel active">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+
+        <!-- LEFT: INPUT PANEL -->
+        <div>
+          <div class="card" style="margin-bottom:1.5rem">
+            <div class="card-header-section">
+              <h3 style="display:flex;align-items:center;gap:8px">🩺 Describe Your Symptoms</h3>
+            </div>
+            <div class="card-body">
+
+              <!-- Voice indicator -->
+              <div id="voiceStatus" style="display:none;margin-bottom:1rem">
+                <div class="alert alert-danger">
+                  <span class="alert-icon">🎤</span>
+                  <div>
+                    <strong>Listening...</strong><br/>
+                    <span id="voiceTranscript" style="font-size:0.8rem">Speak now — say your symptoms clearly</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Symptom Description</label>
+                <div class="input-group" style="align-items:flex-end">
+                  <textarea
+                    id="symptomInput"
+                    class="form-control"
+                    rows="5"
+                    placeholder="e.g., I have a severe headache, fever of 102°F, body aches, and sore throat for the past 2 days..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <button class="voice-btn" id="voiceBtn" title="Click to speak symptoms" onclick="toggleVoice()">🎤</button>
+                <span style="font-size:0.8rem;color:var(--text-light)">Click mic to speak</span>
+                <button class="btn btn-primary" style="margin-left:auto" onclick="analyzeSymptoms()">🔍 Analyze Symptoms</button>
+              </div>
+
+              <!-- Quick symptom chips -->
+              <div style="margin-top:1.25rem">
+                <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Quick Add Symptoms:</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="quickSymptoms">
+                  <button class="symptom-chip" onclick="addSymptom('Headache')">Headache</button>
+                  <button class="symptom-chip" onclick="addSymptom('Fever')">Fever</button>
+                  <button class="symptom-chip" onclick="addSymptom('Cough')">Cough</button>
+                  <button class="symptom-chip" onclick="addSymptom('Fatigue')">Fatigue</button>
+                  <button class="symptom-chip" onclick="addSymptom('Nausea')">Nausea</button>
+                  <button class="symptom-chip" onclick="addSymptom('Chest pain')">Chest Pain</button>
+                  <button class="symptom-chip" onclick="addSymptom('Sore throat')">Sore Throat</button>
+                  <button class="symptom-chip" onclick="addSymptom('Body ache')">Body Ache</button>
+                  <button class="symptom-chip" onclick="addSymptom('Dizziness')">Dizziness</button>
+                  <button class="symptom-chip" onclick="addSymptom('Vomiting')">Vomiting</button>
+                  <button class="symptom-chip" onclick="addSymptom('Runny nose')">Runny Nose</button>
+                  <button class="symptom-chip" onclick="addSymptom('Joint pain')">Joint Pain</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- How it works mini card -->
+          <div class="card">
+            <div class="card-body">
+              <h4 style="margin-bottom:1rem;color:var(--primary)">ℹ️ How AI Analysis Works</h4>
+              <div style="display:flex;flex-direction:column;gap:0.75rem">
+                <div style="display:flex;gap:10px;align-items:center;font-size:0.85rem">
+                  <span style="width:28px;height:28px;border-radius:50%;background:rgba(29,78,216,0.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary);flex-shrink:0;font-size:0.78rem">1</span>
+                  Enter symptoms via text or voice input
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;font-size:0.85rem">
+                  <span style="width:28px;height:28px;border-radius:50%;background:rgba(14,165,233,0.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--secondary);flex-shrink:0;font-size:0.78rem">2</span>
+                  AI model matches with 500+ disease patterns
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;font-size:0.85rem">
+                  <span style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);flex-shrink:0;font-size:0.78rem">3</span>
+                  Get medicines, precautions &amp; specialist advice
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: RESULTS PANEL -->
+        <div id="resultsArea">
+          <!-- Empty state -->
+          <div id="emptyState" class="card">
+            <div class="card-body" style="text-align:center;padding:3rem">
+              <div style="font-size:4rem;margin-bottom:1rem">🤖</div>
+              <h3 style="color:var(--text-medium);margin-bottom:0.5rem">AI Ready to Analyze</h3>
+              <p style="font-size:0.875rem">Enter your symptoms on the left panel and click "Analyze Symptoms" to get instant AI-powered medical recommendations.</p>
+            </div>
+          </div>
+          <!-- Loading state -->
+          <div id="loadingState" style="display:none" class="card">
+            <div class="card-body">
+              <div class="loading-overlay">
+                <div class="spinner"></div>
+                <h3>AI Analyzing Symptoms...</h3>
+                <div class="loading-dots"><span></span><span></span><span></span></div>
+                <p style="font-size:0.875rem">Processing with NLP model. Please wait...</p>
+              </div>
+            </div>
+          </div>
+          <!-- Results -->
+          <div id="resultCard" style="display:none">
+            <div class="diagnosis-box" id="diseaseResult">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+                <span style="font-size:1.5rem">🔬</span>
+                <h3 style="margin:0">Diagnosis Result</h3>
+                <span class="badge badge-primary" id="confidenceBadge">High Confidence</span>
+              </div>
+              <div class="result-section">
+                <h4>Possible Condition</h4>
+                <div style="font-size:1.2rem;font-weight:700;color:var(--primary-dark)" id="diseaseName">—</div>
+                <p style="font-size:0.875rem;margin-top:4px" id="diseaseDesc">—</p>
+              </div>
+            </div>
+            <div class="card" style="margin-top:1rem">
+              <div class="card-body">
+                <div class="result-section">
+                  <h4>💊 Recommended Medicines</h4>
+                  <div id="medicineList" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+                </div>
+                <div class="result-section">
+                  <h4>⚠️ Precautions</h4>
+                  <ul id="precautionList" style="padding-left:1.25rem;color:var(--text-medium);font-size:0.875rem;display:flex;flex-direction:column;gap:6px"></ul>
+                </div>
+                <div class="result-section">
+                  <h4>👨‍⚕️ Suggested Specialist</h4>
+                  <div id="specialistInfo" style="display:flex;align-items:center;gap:12px">
+                    <div style="width:48px;height:48px;border-radius:12px;background:rgba(29,78,216,0.1);display:flex;align-items:center;justify-content:center;font-size:1.3rem">👨‍⚕️</div>
+                    <div>
+                      <div style="font-weight:600" id="specialistName">—</div>
+                      <div style="font-size:0.8rem;color:var(--text-light)" id="specialistNote">—</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="disclaimer">
+                  <span>⚠️</span>
+                  <div>
+                    <strong>Medical Disclaimer:</strong> This is an AI-generated suggestion for informational purposes only.
+                    This does not constitute medical advice, diagnosis, or treatment.
+                    Always consult a qualified healthcare professional before taking any medication.
+                  </div>
+                </div>
+                <div style="margin-top:1.25rem;display:flex;gap:8px;flex-wrap:wrap">
+                  <a href="appointment.html" class="btn btn-primary btn-sm">📅 Book Doctor Appointment</a>
+                  <button class="btn btn-outline btn-sm" onclick="clearResults()">🔄 New Diagnosis</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         TAB 2: MEDICINE SCANNER (NEW)
+    ════════════════════════════════════ -->
+    <div id="moduleScanner" class="module-tab-panel" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+
+        <!-- LEFT: Scanner actions -->
+        <div>
+          <!-- Camera scan card -->
+          <div class="card" style="margin-bottom:1.5rem">
+            <div class="card-header-section">
+              <h3 style="display:flex;align-items:center;gap:8px">📷 Camera Scanner</h3>
+            </div>
+            <div class="card-body">
+              <p style="font-size:0.875rem;color:var(--text-medium);margin-bottom:1.25rem">
+                Point your camera at a medicine box or strip and we'll identify it from our database.
+                <strong>Sign in required.</strong>
+              </p>
+              <button onclick="openScanner()" class="btn btn-primary" style="width:100%;justify-content:center;gap:10px;font-size:1rem;padding:0.875rem">
+                📷 Open Camera Scanner
+              </button>
+
+              <div style="display:flex;align-items:center;gap:12px;margin:1rem 0">
+                <div style="flex:1;height:1px;background:var(--border)"></div>
+                <span style="font-size:0.78rem;color:var(--text-light);font-weight:600">OR UPLOAD IMAGE</span>
+                <div style="flex:1;height:1px;background:var(--border)"></div>
+              </div>
+
+              <!-- Upload drop zone -->
+              <label id="uploadDropZone" style="display:block;border:2px dashed var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s"
+                     onmouseover="this.style.borderColor='var(--primary)';this.style.background='#eff6ff'"
+                     onmouseout="this.style.borderColor='var(--border)';this.style.background=''">
+                <input id="uploadFileInput" type="file" accept="image/*" style="display:none" onchange="uploadMedicineImage(this)"/>
+                <div style="font-size:2rem;margin-bottom:6px">📂</div>
+                <div style="font-size:0.85rem;font-weight:600;color:var(--primary)">Upload Medicine Image</div>
+                <div style="font-size:0.75rem;color:var(--text-light);margin-top:2px">JPG, PNG, WebP supported</div>
+              </label>
+
+              <!-- Preview + 3-button action row -->
+              <div id="uploadPreviewWrap" style="display:none;margin-top:1rem">
+                <!-- Image preview -->
+                <div style="border-radius:var(--radius);overflow:hidden;border:2px solid #bbf7d0;margin-bottom:0.75rem;position:relative">
+                  <img id="uploadPreviewImg" style="width:100%;display:block;max-height:240px;object-fit:cover" src="" alt="Medicine Preview"/>
+                  <!-- Small filename badge -->
+                  <div id="uploadFilenameBadge" style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);color:white;font-size:0.7rem;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+                </div>
+
+                <!-- 3-button action row -->
+                <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:stretch">
+
+                  <!-- Proceed (primary) -->
+                  <button id="uploadProceedBtn"
+                    onclick="analyzeUploadedMedicine()"
+                    class="btn btn-primary"
+                    style="justify-content:center;opacity:0.5"
+                    disabled>
+                    🔬 Proceed to Analysis
+                  </button>
+
+                  <!-- Re-Upload -->
+                  <button id="uploadReUploadBtn"
+                    onclick="reUploadImage()"
+                    class="btn btn-outline"
+                    title="Choose a different image"
+                    style="padding:0 14px;flex-shrink:0">
+                    🔄 Re-Upload
+                  </button>
+
+                  <!-- Delete -->
+                  <button id="uploadDeleteBtn"
+                    onclick="clearUploadPreview()"
+                    class="btn"
+                    title="Remove this image"
+                    style="padding:0 14px;flex-shrink:0;background:#fef2f2;color:#dc2626;border:1px solid #fecaca">
+                    🗑️
+                  </button>
+
+                </div>
+              </div>
+
+              <!-- Inline loading indicator -->
+              <div id="uploadLoadingArea" style="display:none;flex-direction:column;align-items:center;padding:1.5rem;gap:12px;margin-top:1rem;border:1px solid var(--border);border-radius:var(--radius);background:white">
+                <div class="spinning-ring"></div>
+                <div style="font-weight:600;font-size:0.875rem;color:var(--primary)" id="uploadLoadingText">Analyzing medicine image…</div>
+                <div style="font-size:0.78rem;color:var(--text-light)">Checking Supabase database…</div>
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Manual search + results -->
+        <div>
+          <div class="card">
+            <div class="card-header-section">
+              <h3 style="display:flex;align-items:center;gap:8px">🔍 Search by Medicine Name</h3>
+            </div>
+            <div class="card-body">
+              <p style="font-size:0.875rem;color:var(--text-medium);margin-bottom:1rem">
+                Don't have a camera? Search our database directly by medicine name.
+              </p>
+              <div style="display:flex;gap:8px">
+                <input id="medicineSearchInput" class="form-control" type="text"
+                  placeholder="e.g. Paracetamol, Cetirizine, Ibuprofen…"
+                  onkeydown="if(event.key==='Enter')searchMedicineByName()"/>
+                <button id="medicineSearchBtn" onclick="searchMedicineByName()" class="btn btn-primary" style="flex-shrink:0">🔍 Search</button>
+              </div>
+              <div id="medicineSearchResult"></div>
+            </div>
+          </div>
+
+          <!-- Upload result area (shown when user uploads image) -->
+          <div id="uploadResultArea" style="display:none;margin-top:1.5rem"></div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CAMERA SCANNER MODAL
+════════════════════════════════════════════ -->
+<div id="scannerModal" class="modal-overlay" style="align-items:center;justify-content:center">
+  <div style="background:white;border-radius:var(--radius);width:min(560px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,0.25);animation:slideUpModal 0.3s ease">
+
+    <!-- Modal Header -->
+    <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:1">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#0ea5e9);display:flex;align-items:center;justify-content:center;font-size:1.1rem">📷</div>
+        <div>
+          <div style="font-weight:700;font-size:0.95rem">Medicine Scanner</div>
+          <div style="font-size:0.73rem;color:var(--text-light)">Point camera at medicine box or strip</div>
+        </div>
+      </div>
+      <button onclick="closeScanner()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-light);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='none'">✕</button>
+    </div>
+
+    <!-- Camera area -->
+    <div style="padding:1.25rem">
+
+      <!-- Error state -->
+      <div id="cameraError" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);padding:1rem;margin-bottom:1rem;gap:10px;align-items:flex-start">
+        <span style="font-size:1.3rem">🚫</span>
+        <div>
+          <div style="font-weight:600;font-size:0.9rem;color:#dc2626;margin-bottom:4px">Camera Error</div>
+          <div style="font-size:0.82rem;color:#b91c1c" id="cameraErrorMsg"></div>
+          <div style="font-size:0.8rem;color:var(--text-light);margin-top:8px">
+            Alternatively, type the medicine name below:
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input id="cameraErrorHintInput" class="form-control" type="text" placeholder="Type medicine name and press Enter…" style="font-size:0.875rem"
+              onkeydown="if(event.key==='Enter')searchFromCameraError();"/>
+            <button id="confirmNameBtn" onclick="searchFromCameraError()" class="btn btn-primary btn-sm">Search DB</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live camera feed -->
+      <div id="cameraBox" style="display:none;position:relative;background:#000;border-radius:var(--radius);overflow:hidden">
+        <video id="cameraFeed" style="width:100%;display:block;max-height:300px;object-fit:cover" playsinline autoplay muted></video>
+        <div style="position:absolute;inset:0;border:3px solid rgba(29,78,216,0.5);border-radius:var(--radius);pointer-events:none"></div>
+        <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:white;font-size:0.72rem;padding:4px 12px;border-radius:99px;white-space:nowrap">
+          Frame the medicine label clearly
+        </div>
+      </div>
+
+      <!-- Capture preview -->
+      <div id="captureBox" style="display:none">
+        <div style="border-radius:var(--radius);overflow:hidden;border:2px solid #bbf7d0;margin-bottom:1rem">
+          <img id="capturedPreview" style="width:100%;display:block;max-height:300px;object-fit:cover" src="" alt="Captured"/>
+        </div>
+
+        <!-- Medicine name hint -->
+        <div id="hintBox" style="margin-bottom:1rem">
+          <label style="font-size:0.8rem;font-weight:600;color:var(--text-medium);display:block;margin-bottom:4px">
+            💡 Medicine name hint (optional — helps if image quality is low):
+          </label>
+          <input id="cameraHintInput" class="form-control" type="text" placeholder="e.g. Paracetamol 500mg"
+            onkeydown="if(event.key==='Enter')analyzeMedicine()"/>
+        </div>
+      </div>
+
+      <!-- Loading during analysis -->
+      <div id="scanLoadingArea" style="display:none;flex-direction:column;align-items:center;padding:2rem;gap:12px">
+        <div class="spinning-ring"></div>
+        <div style="font-weight:600;font-size:0.9rem;color:var(--primary)" id="scanLoadingText">Analyzing medicine image…</div>
+        <div style="font-size:0.78rem;color:var(--text-light)">Searching Supabase database…</div>
+      </div>
+
+      <!-- Result area inside modal -->
+      <div id="scanResultArea" style="display:none"></div>
+
+      <!-- Canvas (hidden) for frame capture -->
+      <canvas id="captureCanvas" style="display:none"></canvas>
+    </div>
+
+    <!-- Modal Footer -->
+    <div id="captureBtnWrap" style="display:none;padding:1rem 1.25rem;border-top:1px solid var(--border);gap:8px;justify-content:center">
+      <button id="analyzeBtn" onclick="captureFrame()" class="btn btn-primary" style="flex:1;justify-content:center">
+        📸 Capture &amp; Analyze
+      </button>
+      <button onclick="closeScanner()" class="btn btn-outline">Cancel</button>
+    </div>
+
+    <!-- Retake / confirm buttons (inside capture view) -->
+    <div id="captureActionWrap" style="display:none;padding:1rem 1.25rem;border-top:1px solid var(--border);gap:8px;flex-wrap:wrap">
+      <button onclick="analyzeMedicine()" class="btn btn-primary" style="flex:1;min-width:140px;justify-content:center" id="analyzeBtn2">🔬 Proceed to Analysis</button>
+      <button onclick="retakePhoto()" class="btn btn-outline">📷 Retake</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo"><span style="font-size:1.5rem">🏥</span> AI Digital Doctor</div>
+      <p>Your intelligent AI-powered healthcare companion available 24/7.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul class="footer-links">
+        <li><a href="medicine.html">💊 Medicine Recommendation</a></li>
+        <li><a href="appointment.html">👨‍⚕️ Book Appointment</a></li>
+        <li><a href="hospital.html">🏥 Find Hospital</a></li>
+        <li><a href="blood-donation.html">🩸 Blood Donation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="footer-contact-item"><span class="contact-icon">📧</span><span>aidigitaldoctor@health.com</span></div>
+      <div class="footer-contact-item"><span class="contact-icon">📞</span><span>+91 98765 43210</span></div>
+    </div>
+  </div>
+  <div style="padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+    © 2024 AI Digital Doctor. All rights reserved.
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<style>
+/* ── Existing styles ── */
+.symptom-chip {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: white;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-medium);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.symptom-chip:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  transform: translateY(-1px);
+}
+/* ── Module tabs ── */
+.module-tab-panel { display: none; }
+.module-tab-panel.active { display: block; }
+
+/* ── Scanner modal animation ── */
+@keyframes slideUpModal {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Spinning ring for analysis loader ── */
+.spinning-ring {
+  width: 48px; height: 48px;
+  border: 4px solid #bfdbfe;
+  border-top-color: #1d4ed8;
+  border-radius: 50%;
+  animation: spinRing 0.8s linear infinite;
+}
+@keyframes spinRing { to { transform: rotate(360deg); } }
+
+/* ── Capture box show analyze button ── */
+#captureBox:not(:empty) ~ #captureBtnWrap { display: none !important; }
+
+@media(max-width:768px){
+  #moduleSymptoms .container > div,
+  #moduleScanner .container > div,
+  section .container > div { grid-template-columns: 1fr !important; }
+}
+</style>
+
+<!-- Scripts: Supabase FIRST, then OCR, then modules -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<!-- Tesseract.js for client-side OCR (fallback when Vision API key not set) -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/profile-panel.js"></script>
+<script src="js/medicine.js"></script>
+<script src="js/medicine-scanner.js"></script>
+
+<script>
+/* ── Module tab switcher (separate from blood.js tabs) ── */
+function switchModuleTab(tab) {
+  document.getElementById('moduleSymptoms').style.display = tab === 'symptoms' ? 'block' : 'none';
+  document.getElementById('moduleScanner').style.display  = tab === 'scanner'  ? 'block' : 'none';
+  document.getElementById('tabSymptomBtn').classList.toggle('active', tab === 'symptoms');
+  document.getElementById('tabScannerBtn').classList.toggle('active', tab === 'scanner');
+}
+
+/* captureActionWrap visibility is now managed directly by captureFrame() and retakePhoto()
+   in medicine-scanner.js — no MutationObserver needed (caused retake Proceed button bug) */
+</script>
+</body>
+</html>

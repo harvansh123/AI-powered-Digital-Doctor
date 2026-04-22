@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blood Donation — AI Digital Doctor</title>
+  <meta name="description" content="Connect blood donors with those in need. Register as a donor or request blood."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩸</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🏥</div>
+      <span>AI Digital Doctor</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="abstract.html">Abstract</a>
+      <div class="nav-dropdown">
+        <a href="#" onclick="return false" style="display:flex;align-items:center;gap:4px;">Categories <span style="font-size:0.7rem;">▾</span></a>
+        <div class="nav-dropdown-menu">
+          <a href="medicine.html"><span class="icon">💊</span> Medicine Recommendation</a>
+          <a href="appointment.html"><span class="icon">👨‍⚕️</span> Doctor Appointment</a>
+          <a href="hospital.html"><span class="icon">🏥</span> Nearest Hospital</a>
+          <a href="blood-donation.html"><span class="icon">🩸</span> Blood Donation</a>
+        </div>
+      </div>
+    </div>
+    <div class="nav-actions" id="navActions">
+      <a href="login.html" class="btn-nav-login">Sign In</a>
+      <a href="register.html" class="btn-nav-signup">Sign Up</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero" style="background:linear-gradient(135deg,#7f1d1d,#dc2626,#ef4444)">
+  <div style="position:relative;z-index:1">
+    <span class="tag" style="background:rgba(255,255,255,0.15);color:white;">🩸 Save Lives</span>
+    <h1 style="margin:0.75rem 0 0.5rem">Blood Donation Network</h1>
+    <p>Every drop counts — connect donors with those in need and save precious lives</p>
+    <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:2rem;flex-wrap:wrap">
+      <div style="text-align:center;color:white">
+        <div style="font-size:1.75rem;font-weight:800">8,742</div>
+        <div style="font-size:0.75rem;opacity:0.8">Registered Donors</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.2)"></div>
+      <div style="text-align:center;color:white">
+        <div style="font-size:1.75rem;font-weight:800">1,284</div>
+        <div style="font-size:0.75rem;opacity:0.8">Lives Saved</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.2)"></div>
+      <div style="text-align:center;color:white">
+        <div style="font-size:1.75rem;font-weight:800">8</div>
+        <div style="font-size:0.75rem;opacity:0.8">Blood Groups</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section-sm">
+  <div class="container">
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('donors')">🩸 Find Donors</button>
+      <button class="tab-btn" onclick="switchTab('register')">📝 Become a Donor</button>
+      <button class="tab-btn" onclick="switchTab('request')">🆘 Request Blood</button>
+    </div>
+
+    <!-- TAB: FIND DONORS -->
+    <div class="tab-panel active" id="tab-donors">
+      <!-- Blood group filter -->
+      <div style="margin-bottom:2rem">
+        <p style="font-size:0.875rem;color:var(--text-light);margin-bottom:1rem">Filter by Blood Group:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px" id="bloodGroupFilter">
+          <button class="blood-group-btn active" onclick="filterByBlood('all')">All</button>
+          <button class="blood-group-btn" onclick="filterByBlood('A+')">A+</button>
+          <button class="blood-group-btn" onclick="filterByBlood('A-')">A−</button>
+          <button class="blood-group-btn" onclick="filterByBlood('B+')">B+</button>
+          <button class="blood-group-btn" onclick="filterByBlood('B-')">B−</button>
+          <button class="blood-group-btn" onclick="filterByBlood('AB+')">AB+</button>
+          <button class="blood-group-btn" onclick="filterByBlood('AB-')">AB−</button>
+          <button class="blood-group-btn" onclick="filterByBlood('O+')">O+</button>
+          <button class="blood-group-btn" onclick="filterByBlood('O-')">O−</button>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <div class="filter-bar" style="margin-bottom:1.5rem">
+        <div style="flex:1">
+          <input id="searchDonor" class="form-control" type="text" placeholder="Search by name, city..." oninput="searchDonors()"/>
+        </div>
+        <div style="min-width:180px">
+          <select id="cityFilter" class="form-control" onchange="searchDonors()">
+            <option value="">All Cities</option>
+            <option>Mumbai</option><option>Delhi</option><option>Bangalore</option>
+            <option>Hyderabad</option><option>Chennai</option><option>Pune</option>
+            <option>Kolkata</option><option>Ahmedabad</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1rem;color:var(--text-light);font-size:0.875rem">
+        Showing <strong id="donorCount">0</strong> donors
+      </div>
+      <div id="donorGrid" class="grid grid-3"></div>
+    </div>
+
+    <!-- TAB: BECOME DONOR -->
+    <div class="tab-panel" id="tab-register">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+        <div>
+          <div class="card">
+            <div class="card-header-section">
+              <h3>🩸 Register as Blood Donor</h3>
+            </div>
+            <div class="card-body">
+              <form id="donorForm" onsubmit="registerDonor(event)">
+                <div class="form-group">
+                  <label class="form-label required">Full Name</label>
+                  <input id="dname" class="form-control" type="text" placeholder="Your full name" required/>
+                </div>
+                <div class="grid grid-2" style="gap:1rem">
+                  <div class="form-group">
+                    <label class="form-label required">Age</label>
+                    <input id="dage" class="form-control" type="number" min="18" max="65" placeholder="18–65" required/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label required">Blood Group</label>
+                    <select id="dblood" class="form-control" required>
+                      <option value="">Select group</option>
+                      <option>A+</option><option>A-</option>
+                      <option>B+</option><option>B-</option>
+                      <option>AB+</option><option>AB-</option>
+                      <option>O+</option><option>O-</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">Phone Number</label>
+                  <input id="dphone" class="form-control" type="tel" placeholder="+91 98765 43210" required/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">City</label>
+                  <input id="dcity" class="form-control" type="text" placeholder="Your city" required/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Donation Date</label>
+                  <input id="dlastdate" class="form-control" type="date"/>
+                  <p class="form-hint">Leave blank if first-time donor</p>
+                </div>
+                <div class="form-group">
+                  <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;cursor:pointer">
+                    <input type="checkbox" id="dConsent" required style="width:16px;height:16px;accent-color:var(--danger)"/>
+                    I confirm I am 18–65 years old, in good health, and willing to donate blood voluntarily.
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-danger" style="width:100%">🩸 Register as Donor</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="background:linear-gradient(135deg,#fff1f2,#ffe4e6);border-color:#fecdd3;margin-bottom:1.5rem">
+            <div class="card-body">
+              <h3 style="color:#9f1239;margin-bottom:1rem">💉 Why Donate Blood?</h3>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.875rem;color:#7f1d1d">
+                  <span>🫀</span><span>One donation can save up to <strong>3 lives</strong></span>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.875rem;color:#7f1d1d">
+                  <span>🔄</span><span>Blood replenishes within <strong>24–48 hours</strong></span>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.875rem;color:#7f1d1d">
+                  <span>❤️</span><span>Free health screening included</span>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.875rem;color:#7f1d1d">
+                  <span>😊</span><span>Feel good helping your community</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h4 style="margin-bottom:0.75rem">📋 Eligibility Criteria</h4>
+              <ul style="display:flex;flex-direction:column;gap:6px;color:var(--text-medium);font-size:0.875rem;padding-left:1.25rem">
+                <li>Age between 18 and 65 years</li>
+                <li>Weight at least 50 kg</li>
+                <li>Hemoglobin ≥ 12.5 g/dl</li>
+                <li>No recent illness or surgery</li>
+                <li>Not pregnant or breastfeeding</li>
+                <li>Wait 56 days between donations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: REQUEST BLOOD -->
+    <div class="tab-panel" id="tab-request">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+        <div class="card">
+          <div class="card-header-section">
+            <h3>🆘 Request Blood</h3>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-danger" style="margin-bottom:1.5rem">
+              <span class="alert-icon">⚠️</span>
+              <div>For life-threatening emergencies, call <strong>108</strong> (Emergency) immediately.</div>
+            </div>
+            <form id="requestForm" onsubmit="submitBloodRequest(event)">
+              <div class="form-group">
+                <label class="form-label required">Patient Name</label>
+                <input id="rname" class="form-control" type="text" placeholder="Patient's full name" required/>
+              </div>
+              <div class="grid grid-2" style="gap:1rem">
+                <div class="form-group">
+                  <label class="form-label required">Blood Group Required</label>
+                  <select id="rblood" class="form-control" required>
+                    <option value="">Select group</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>O+</option><option>O-</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label required">Units Required</label>
+                  <input id="runits" class="form-control" type="number" min="1" max="20" placeholder="e.g. 2" required/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Hospital / Location</label>
+                <input id="rhospital" class="form-control" type="text" placeholder="Hospital name and city" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Contact Number</label>
+                <input id="rcontact" class="form-control" type="tel" placeholder="+91 98765 43210" required/>
+              </div>
+              <div class="form-group">
+                <label class="form-label required">Urgency Level</label>
+                <select id="rurgency" class="form-control" required>
+                  <option value="">Select urgency</option>
+                  <option value="critical">🔴 Critical — Within hours</option>
+                  <option value="urgent">🟠 Urgent — Within 24 hours</option>
+                  <option value="moderate">🟡 Moderate — Within 3 days</option>
+                  <option value="planned">🟢 Planned — Within a week</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Additional Notes</label>
+                <textarea id="rnotes" class="form-control" rows="3" placeholder="Any additional information..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-danger" style="width:100%">🆘 Submit Blood Request</button>
+            </form>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-body">
+              <h4 style="margin-bottom:0.75rem;color:var(--danger)">📞 Emergency Contacts</h4>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg);border-radius:var(--radius-sm)">
+                  <span style="font-size:0.875rem;font-weight:600">🚑 Ambulance</span>
+                  <a href="tel:108" style="color:var(--danger);font-weight:700;font-size:1.1rem">108</a>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg);border-radius:var(--radius-sm)">
+                  <span style="font-size:0.875rem;font-weight:600">🩸 Blood Bank</span>
+                  <a href="tel:1800112218" style="color:var(--danger);font-weight:700;font-size:1.1rem">1800-11-2218</a>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg);border-radius:var(--radius-sm)">
+                  <span style="font-size:0.875rem;font-weight:600">🏥 Emergency</span>
+                  <a href="tel:112" style="color:var(--danger);font-weight:700;font-size:1.1rem">112</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h4 style="margin-bottom:0.75rem">🔄 Blood Compatibility</h4>
+              <table style="width:100%;font-size:0.78rem;border-collapse:collapse">
+                <thead>
+                  <tr style="background:var(--bg)">
+                    <th style="padding:6px 8px;text-align:left;border:1px solid var(--border)">Blood Type</th>
+                    <th style="padding:6px 8px;text-align:left;border:1px solid var(--border)">Can Donate To</th>
+                    <th style="padding:6px 8px;text-align:left;border:1px solid var(--border)">Can Receive From</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="padding:5px 8px;border:1px solid var(--border)"><strong>O−</strong></td><td style="padding:5px 8px;border:1px solid var(--border)">All types</td><td style="padding:5px 8px;border:1px solid var(--border)">O−</td></tr>
+                  <tr style="background:var(--bg)"><td style="padding:5px 8px;border:1px solid var(--border)"><strong>O+</strong></td><td style="padding:5px 8px;border:1px solid var(--border)">O+,A+,B+,AB+</td><td style="padding:5px 8px;border:1px solid var(--border)">O+,O−</td></tr>
+                  <tr><td style="padding:5px 8px;border:1px solid var(--border)"><strong>A+</strong></td><td style="padding:5px 8px;border:1px solid var(--border)">A+,AB+</td><td style="padding:5px 8px;border:1px solid var(--border)">A+,A−,O+,O−</td></tr>
+                  <tr style="background:var(--bg)"><td style="padding:5px 8px;border:1px solid var(--border)"><strong>B+</strong></td><td style="padding:5px 8px;border:1px solid var(--border)">B+,AB+</td><td style="padding:5px 8px;border:1px solid var(--border)">B+,B−,O+,O−</td></tr>
+                  <tr><td style="padding:5px 8px;border:1px solid var(--border)"><strong>AB+</strong></td><td style="padding:5px 8px;border:1px solid var(--border)">AB+ only</td><td style="padding:5px 8px;border:1px solid var(--border)">All types</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo"><span style="font-size:1.5rem">🏥</span> AI Digital Doctor</div>
+      <p>Your intelligent AI-powered healthcare companion available 24/7.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul class="footer-links">
+        <li><a href="medicine.html">💊 Medicine Recommendation</a></li>
+        <li><a href="appointment.html">👨‍⚕️ Book Appointment</a></li>
+        <li><a href="hospital.html">🏥 Find Hospital</a></li>
+        <li><a href="blood-donation.html">🩸 Blood Donation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="footer-contact-item"><span class="contact-icon">📧</span><span>aidigitaldoctor@health.com</span></div>
+      <div class="footer-contact-item"><span class="contact-icon">📞</span><span>+91 98765 43210</span></div>
+    </div>
+  </div>
+  <div style="padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+    © 2024 AI Digital Doctor. All rights reserved.
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/profile-panel.js"></script>
+<script src="js/blood.js"></script>
+</body>
+</html>

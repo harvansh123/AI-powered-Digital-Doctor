@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abstract — AI Digital Doctor</title>
+  <meta name="description" content="Project abstract — AI Digital Doctor healthcare platform overview." />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">🏥</div>
+        <span>AI Digital Doctor</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="abstract.html" class="active">Abstract</a>
+        <div class="nav-dropdown">
+          <a href="#" onclick="return false" style="display:flex;align-items:center;gap:4px;">Categories <span
+              style="font-size:0.7rem;">▾</span></a>
+          <div class="nav-dropdown-menu">
+            <a href="medicine.html"><span class="icon">💊</span> Medicine Recommendation</a>
+            <a href="appointment.html"><span class="icon">👨‍⚕️</span> Doctor Appointment</a>
+            <a href="hospital.html"><span class="icon">🏥</span> Nearest Hospital</a>
+            <a href="blood-donation.html"><span class="icon">🩸</span> Blood Donation</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-actions" id="navActions">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+        <a href="register.html" class="btn-nav-signup">Sign Up</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div style="position:relative;z-index:1">
+      <span class="tag" style="background:rgba(255,255,255,0.15);color:white;">📄 Documentation</span>
+      <h1 style="margin:0.75rem 0 0.5rem">Project Abstract</h1>
+      <p>Comprehensive overview of the AI Digital Doctor healthcare platform</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container" style="max-width:900px">
+
+      <!-- Introduction -->
+      <div class="abstract-section">
+        <h3>🏥 Introduction</h3>
+        <p>The <strong>AI-Powered Digital Doctor</strong> is an intelligent, full-stack healthcare web application
+          designed to bridge the gap between patients and medical assistance using artificial intelligence. The platform
+          leverages Natural Language Processing (NLP) to analyze patient-reported symptoms and provide evidence-based
+          medicine recommendations, specialist referrals, and precautionary guidance.</p>
+        <p style="margin-top:0.75rem">In a world where healthcare accessibility remains a significant challenge —
+          especially in rural and underserved regions — this system provides a digital first-response mechanism that
+          empowers individuals with immediate, reliable health information at their fingertips, 24 hours a day, 7 days a
+          week.</p>
+      </div>
+
+      <!-- Problem Statement -->
+      <div class="abstract-section">
+        <h3>⚠️ Problem Statement</h3>
+        <p>Despite advances in modern medicine, millions of people globally face barriers to basic healthcare access due
+          to:</p>
+        <ul
+          style="margin-top:0.75rem;padding-left:1.5rem;color:var(--text-medium);display:flex;flex-direction:column;gap:8px">
+          <li><strong>Geographic constraints</strong> — Remote areas lack adequate medical infrastructure</li>
+          <li><strong>Economic limitations</strong> — High costs of consultations prevent timely medical care</li>
+          <li><strong>Time barriers</strong> — Long waiting times at hospitals deter patients</li>
+          <li><strong>Health literacy</strong> — Lack of knowledge about symptoms leads to delayed treatment</li>
+          <li><strong>Doctor shortage</strong> — Insufficient healthcare professionals relative to population</li>
+          <li><strong>Emergency gaps</strong> — Blood shortages and hospital locating difficulties in crises</li>
+        </ul>
+      </div>
+
+      <!-- Objectives -->
+      <div class="abstract-section">
+        <h3>🎯 Objectives</h3>
+        <div class="grid grid-2" style="gap:1rem;margin-top:0.75rem">
+          <div
+            style="padding:14px;background:rgba(29,78,216,0.05);border-radius:var(--radius-sm);border:1px solid rgba(29,78,216,0.1)">
+            <div style="font-size:1.2rem;margin-bottom:6px">🧠</div>
+            <h4 style="font-size:0.9rem;margin-bottom:4px">AI Symptom Analysis</h4>
+            <p style="font-size:0.8rem">Implement NLP-based symptom understanding with disease pattern matching</p>
+          </div>
+          <div
+            style="padding:14px;background:rgba(16,185,129,0.05);border-radius:var(--radius-sm);border:1px solid rgba(16,185,129,0.1)">
+            <div style="font-size:1.2rem;margin-bottom:6px">💊</div>
+            <h4 style="font-size:0.9rem;margin-bottom:4px">Medicine Recommendations</h4>
+            <p style="font-size:0.8rem">Provide safe, evidence-based medication guidance with proper disclaimers</p>
+          </div>
+          <div
+            style="padding:14px;background:rgba(14,165,233,0.05);border-radius:var(--radius-sm);border:1px solid rgba(14,165,233,0.1)">
+            <div style="font-size:1.2rem;margin-bottom:6px">📅</div>
+            <h4 style="font-size:0.9rem;margin-bottom:4px">Appointment Management</h4>
+            <p style="font-size:0.8rem">Build an online booking system connecting patients with specialists</p>
+          </div>
+          <div
+            style="padding:14px;background:rgba(239,68,68,0.05);border-radius:var(--radius-sm);border:1px solid rgba(239,68,68,0.1)">
+            <div style="font-size:1.2rem;margin-bottom:6px">🩸</div>
+            <h4 style="font-size:0.9rem;margin-bottom:4px">Blood Donation Network</h4>
+            <p style="font-size:0.8rem">Create a real-time blood donor-recipient matchmaking system</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proposed Solution -->
+      <div class="abstract-section">
+        <h3>💡 Proposed Solution</h3>
+        <p>The platform addresses healthcare challenges through four integrated modules:</p>
+        <div style="margin-top:1rem;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span
+              style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0">1</span>
+            <div>
+              <h4 style="font-size:0.9rem">AI Medicine Recommendation Engine</h4>
+              <p style="font-size:0.85rem">An NLP-powered system that processes natural language symptom descriptions
+                (text and voice) and maps them to a comprehensive medical knowledge base, returning probable diagnoses,
+                recommended OTC medicines, precautions, and specialist suggestions.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span
+              style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--secondary),var(--accent));color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0">2</span>
+            <div>
+              <h4 style="font-size:0.9rem">Doctor Appointment System</h4>
+              <p style="font-size:0.85rem">A comprehensive booking platform with real-time availability, specialization
+                filtering, and confirmation notifications to connect patients with the right specialists efficiently.
+              </p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span
+              style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#6ee7b7);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0">3</span>
+            <div>
+              <h4 style="font-size:0.9rem">Hospital Finder with Geolocation</h4>
+              <p style="font-size:0.85rem">GPS-powered hospital discovery system that locates the nearest medical
+                facilities, displays their details, and provides navigation assistance — critical in emergency
+                situations.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span
+              style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--danger),#f87171);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0">4</span>
+            <div>
+              <h4 style="font-size:0.9rem">Blood Donation Matchmaking</h4>
+              <p style="font-size:0.85rem">A real-time donor-recipient matching system with blood group compatibility
+                checking, urgent request broadcasting, and donor registration to save lives during medical emergencies.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Conclusion -->
+      <div class="abstract-section">
+        <h3>✅ Conclusion</h3>
+        <p>The AI-Powered Digital Doctor platform represents a significant step toward democratizing healthcare access
+          through technology. By combining artificial intelligence, modern web technologies, and an intuitive user
+          interface, the system provides an accessible, reliable, and intelligent first point of contact for health
+          concerns.</p>
+        <p style="margin-top:0.75rem">While the platform is not a substitute for professional medical diagnosis and
+          treatment, it serves as a critical tool for health education, symptom awareness, and connecting patients with
+          appropriate care resources — ultimately contributing to better health outcomes for individuals and
+          communities.</p>
+        <div class="disclaimer" style="margin-top:1rem">
+          <span>⚠️</span>
+          <div><strong>Academic Disclaimer:</strong> This project is developed for educational purposes. All
+            AI-generated medical suggestions are for informational use only and do not replace professional medical
+            consultation.</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:2rem">
+        <a href="medicine.html" class="btn btn-primary btn-lg">🩺 Try the Platform</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span style="font-size:1.5rem">🏥</span> AI Digital Doctor</div>
+        <p>Your intelligent AI-powered healthcare companion available 24/7.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="medicine.html">💊 Medicine Recommendation</a></li>
+          <li><a href="appointment.html">👨‍⚕️ Book Appointment</a></li>
+          <li><a href="hospital.html">🏥 Find Hospital</a></li>
+          <li><a href="blood-donation.html">🩸 Blood Donation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item"><span class="contact-icon">📧</span><span>aidigitaldoctor@health.com</span>
+        </div>
+        <div class="footer-contact-item"><span class="contact-icon">📞</span><span>+91 98765 43210</span></div>
+      </div>
+    </div>
+    <div
+      style="padding:1.5rem 2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:0.8rem;color:rgba(255,255,255,0.4)">
+      © 2024 AI Digital Doctor. All rights reserved.
+    </div>
+  </footer>
+
+  <div id="toast-container"></div>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

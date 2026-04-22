@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Supabase Connection Test</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 2rem; width: 100%; max-width: 540px; }
+    h1 { font-size: 1.4rem; margin-bottom: 1.5rem; color: #38bdf8; }
+    .step { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 10px; margin-bottom: 10px; background: #0f172a; border: 1px solid #1e293b; }
+    .icon { font-size: 1.3rem; flex-shrink: 0; }
+    .label { font-size: 0.85rem; color: #94a3b8; margin-bottom: 2px; }
+    .value { font-size: 0.9rem; font-weight: 600; word-break: break-all; }
+    .ok    { color: #4ade80; }
+    .err   { color: #f87171; }
+    .warn  { color: #facc15; }
+    .form { margin-top: 1.5rem; }
+    input { width: 100%; padding: 10px 14px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 0.9rem; margin-bottom: 10px; outline: none; }
+    input:focus { border-color: #38bdf8; }
+    button { width: 100%; padding: 12px; background: #0ea5e9; border: none; border-radius: 8px; color: white; font-weight: 700; cursor: pointer; font-size: 0.95rem; }
+    button:hover { background: #0284c7; }
+    #result { margin-top: 1rem; padding: 12px; border-radius: 8px; font-size: 0.85rem; display: none; }
+    .result-ok  { background: #052e16; border: 1px solid #4ade80; color: #4ade80; }
+    .result-err { background: #1c0a0a; border: 1px solid #f87171; color: #f87171; }
+    pre { font-size: 0.75rem; margin-top: 6px; white-space: pre-wrap; word-break: break-all; opacity: 0.8; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>🔍 Supabase Connection Diagnostic</h1>
+
+  <div class="step">
+    <span class="icon">🌐</span>
+    <div>
+      <div class="label">Supabase URL</div>
+      <div class="value" id="showUrl">Loading...</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="icon">🔑</span>
+    <div>
+      <div class="label">Anon Key (first 20 chars)</div>
+      <div class="value" id="showKey">Loading...</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="icon">📦</span>
+    <div>
+      <div class="label">Supabase JS Library</div>
+      <div class="value" id="showLib">Checking...</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="icon">🔗</span>
+    <div>
+      <div class="label">Connection Test (DB ping)</div>
+      <div class="value" id="showPing">Testing...</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <span class="icon">🔒</span>
+    <div>
+      <div class="label">Auth Service Reachable</div>
+      <div class="value" id="showAuth">Testing...</div>
+    </div>
+  </div>
+
+  <hr style="border-color:#334155;margin:1.5rem 0"/>
+
+  <div class="form">
+    <h2 style="font-size:1rem;margin-bottom:1rem;color:#94a3b8">🧪 Test Sign Up (creates real account)</h2>
+    <input type="email"    id="testEmail"    placeholder="test@example.com" value="testuser123@gmail.com"/>
+    <input type="password" id="testPassword" placeholder="password (min 6 chars)" value="testpass123"/>
+    <button onclick="testSignUp()">🚀 Test Create Account</button>
+    <div id="result"></div>
+  </div>
+</div>
+
+<!-- Load Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+window.addEventListener('load', async () => {
+  // Show config
+  document.getElementById('showUrl').innerHTML = `<span class="ok">${SUPABASE_URL}</span>`;
+  document.getElementById('showKey').innerHTML = `<span class="ok">${SUPABASE_ANON.substring(0, 25)}...</span>`;
+
+  // Check library
+  if (window.supabase && supabase) {
+    document.getElementById('showLib').innerHTML = `<span class="ok">✅ Loaded successfully</span>`;
+  } else {
+    document.getElementById('showLib').innerHTML = `<span class="err">❌ FAILED — CDN blocked or not loaded</span>`;
+  }
+
+  // Ping DB (try profiles table)
+  try {
+    const { data, error } = await supabase.from('profiles').select('id', { count: 'exact', head: true });
+    if (error) throw error;
+    document.getElementById('showPing').innerHTML = `<span class="ok">✅ Database reachable</span>`;
+  } catch(e) {
+    document.getElementById('showPing').innerHTML = `<span class="err">❌ ${e.message}</span>`;
+  }
+
+  // Test auth service
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    document.getElementById('showAuth').innerHTML = `<span class="ok">✅ Auth service online</span>`;
+  } catch(e) {
+    document.getElementById('showAuth').innerHTML = `<span class="err">❌ ${e.message}</span>`;
+  }
+});
+
+async function testSignUp() {
+  const email    = document.getElementById('testEmail').value;
+  const password = document.getElementById('testPassword').value;
+  const result   = document.getElementById('result');
+  result.style.display = 'block';
+  result.className = '';
+  result.innerHTML = '⏳ Creating account...';
+
+  if (!supabase) {
+    result.className = 'result-err';
+    result.innerHTML = '❌ Supabase client is null. CDN failed to load.';
+    return;
+  }
+
+  const start = Date.now();
+  const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { first_name: 'Test', last_name: 'User', role: 'patient' } } });
+  const ms = Date.now() - start;
+
+  if (error) {
+    result.className = 'result-err';
+    result.innerHTML = `❌ Sign up FAILED (${ms}ms)<pre>${JSON.stringify(error, null, 2)}</pre>`;
+  } else {
+    result.className = 'result-ok';
+    const needsConfirm = !data.session && data.user;
+    result.innerHTML = `✅ Account created! (${ms}ms)
+      ${needsConfirm
+        ? '<pre>⚠️ Email confirmation is ON — go to Supabase Dashboard → Auth → Providers → Email → turn OFF "Confirm email" → Save</pre>'
+        : `<pre>Session active. User ID: ${data.user?.id}</pre>`
+      }`;
+  }
+}
+</script>
+</body>
+</html>
