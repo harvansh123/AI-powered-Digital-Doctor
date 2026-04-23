@@ -64,38 +64,65 @@ function updateNavAuth() {
   const user = getUser();
   const navActions = document.getElementById('navActions');
   if (!navActions) return;
+
   if (user) {
     const firstName = user.first_name || user.firstName || '';
     const lastName  = user.last_name  || user.lastName  || '';
     const initials  = ((firstName[0]||'') + (lastName[0]||'')).toUpperCase() || '👤';
+
     navActions.innerHTML = `
-      <div class="nav-user" id="userMenu">
+      <div class="nav-user" id="userMenu" style="box-sizing:border-box;user-select:none;">
         <div class="avatar">${initials}</div>
-        <span>${firstName || 'User'}</span>
-        <span style="font-size:0.7rem;">▾</span>
-      </div>
-      <div id="userDropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:white;border:1px solid var(--border);border-radius:var(--radius);padding:8px;min-width:200px;box-shadow:var(--card-shadow-hover);z-index:999">
-        <a href="#" onclick="event.preventDefault();if(typeof openProfilePanel===\'function\')openProfilePanel();" style="display:block;padding:8px 12px;font-size:0.85rem;border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px" class="dropdown-link">👤 My Profile &amp; Appointments</a>
-        <hr style="border:none;border-top:1px solid var(--border);margin:4px 0"/>
-        <a href="#" onclick="logout()" style="display:block;padding:8px 12px;font-size:0.85rem;border-radius:var(--radius-sm);color:var(--danger)" class="dropdown-link">🚪 Logout</a>
+        <span style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${firstName || 'User'}</span>
+        <span style="font-size:0.7rem;flex-shrink:0">▾</span>
       </div>
     `;
-    const userMenu     = document.getElementById('userMenu');
-    const userDropdown = document.getElementById('userDropdown');
-    if (userMenu && userDropdown) {
-      const wrapper = document.createElement('div');
-      wrapper.style.position = 'relative';
-      userMenu.parentNode.insertBefore(wrapper, userMenu);
-      wrapper.appendChild(userMenu);
-      wrapper.appendChild(userDropdown);
-      userMenu.addEventListener('click', () => {
-        userDropdown.style.display = userDropdown.style.display === 'none' ? 'block' : 'none';
-      });
-      document.addEventListener('click', (e) => {
-        if (!wrapper.contains(e.target)) userDropdown.style.display = 'none';
+
+    // Add is-logged-in so mobile CSS shows avatar in topbar
+    navActions.classList.add('is-logged-in');
+
+    // Create dropdown separately for proper z-index control
+    const dropdown = document.createElement('div');
+    dropdown.id = 'userDropdown';
+    dropdown.style.cssText = `
+      display:none;position:fixed;top:var(--nav-height);right:0.75rem;
+      background:white;border:1px solid var(--border);
+      border-radius:var(--radius);padding:8px;min-width:210px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.15);z-index:1100;
+      box-sizing:border-box;
+    `;
+    dropdown.innerHTML = `
+      <a href="#" onclick="event.preventDefault();if(typeof openProfilePanel==='function')openProfilePanel();"
+        style="display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:0.85rem;
+        border-radius:var(--radius-sm);color:var(--text-dark);font-weight:500;transition:background 0.15s"
+        onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''"
+        class="dropdown-link">👤 My Profile &amp; Appointments</a>
+      <hr style="border:none;border-top:1px solid var(--border);margin:4px 0"/>
+      <a href="#" onclick="logout()"
+        style="display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:0.85rem;
+        border-radius:var(--radius-sm);color:var(--danger);font-weight:500;transition:background 0.15s"
+        onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background=''"
+        class="dropdown-link">🚪 Logout</a>
+    `;
+    document.body.appendChild(dropdown);
+
+    const userMenu = document.getElementById('userMenu');
+    if (userMenu) {
+      userMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = dropdown.style.display === 'none' || !dropdown.style.display;
+        dropdown.style.display = isHidden ? 'block' : 'none';
       });
     }
+    document.addEventListener('click', (e) => {
+      if (!navActions.contains(e.target)) dropdown.style.display = 'none';
+    });
+
+  } else {
+    // Logged out — remove class so Sign In/Sign Up is hidden on mobile (goes to hamburger)
+    navActions.classList.remove('is-logged-in');
   }
+
   // Always sync mobile actions after auth update
   syncMobileActions();
 }
