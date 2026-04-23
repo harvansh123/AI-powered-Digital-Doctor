@@ -2066,7 +2066,22 @@ body.auth-page { padding-top: 0 !important; }
   .hero-doctor-card { max-width: 360px; }
 }
 @media (max-width: 768px) {
-  .hero-text p   { margin-left: auto; margin-right: auto; }
+  /* Fix hero section stacking on mobile */
+  .hero-content { 
+    grid-template-columns: 1fr !important; 
+    text-align: center; 
+    padding: 2.5rem 1rem !important;
+  }
+  .hero-actions { justify-content: center; }
+  .hero-text p { margin: 1.5rem auto; }
+  
+  /* Fix login role cards stacking on mobile */
+  .role-cards-grid { 
+    grid-template-columns: 1fr !important; 
+    max-width: 360px !important;
+    margin: 0 auto;
+  }
+
   .hero-visual   { justify-content: center; }
   .hero-doctor-card {
     max-width: 340px;
