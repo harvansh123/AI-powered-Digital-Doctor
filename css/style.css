@@ -1273,42 +1273,240 @@ footer::before {
 }
 
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE — COMPREHENSIVE MOBILE-FIRST
    ============================================================ */
+
+/* ── Tablet (≤ 1024px) ── */
 @media (max-width: 1024px) {
-  .footer-top { grid-template-columns: 1fr 1fr; }
-  .hero-content { grid-template-columns: 1fr; text-align: center; }
-  .hero-text p { max-width: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .hero-content { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+  .hero-text p  { max-width: none; }
   .hero-actions { justify-content: center; }
-  .hero-stats { justify-content: center; }
-  .hero-visual { display: none; }
-  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .hero-stats   { justify-content: center; }
+  .hero-visual  { display: none; }
+  .grid-4       { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid   { grid-template-columns: repeat(2, 1fr); }
+  .profile-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Mobile (≤ 768px) ── */
 @media (max-width: 768px) {
+
+  /* --- Navbar --- */
+  .navbar { padding: 0 1rem; }
   .nav-links { display: none; }
+  .nav-actions { display: none; }           /* hide Sign In/Sign Up from top bar */
   .nav-hamburger { display: flex; }
+  .nav-logo span { font-size: 1rem; }
+
+  /* Mobile menu open state */
   .nav-links.open {
     display: flex;
     flex-direction: column;
     position: fixed;
     top: var(--nav-height); left: 0; right: 0;
     background: white;
-    padding: 1rem;
+    padding: 1rem 1.25rem 1.5rem;
     border-bottom: 1px solid var(--border);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     z-index: 999;
+    gap: 0.25rem;
   }
+  /* Show Sign In/Sign Up inside the mobile menu when open */
+  .nav-links.open .nav-mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .nav-links.open .nav-mobile-actions .btn-nav-login,
+  .nav-links.open .nav-mobile-actions .btn-nav-signup {
+    display: block;
+    text-align: center;
+    padding: 10px 18px;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  /* Dropdown on mobile — show as block */
+  .nav-dropdown-menu {
+    position: static;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    box-shadow: none;
+    border: none;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 6px;
+    margin-top: 4px;
+    display: none;
+  }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+
+  /* --- Grids --- */
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr; gap: 2rem; }
-  .section { padding: 60px 1rem; }
-  .filter-bar { flex-direction: column; align-items: stretch; }
+
+  /* --- Sections --- */
+  .section    { padding: 48px 1rem; }
+  .section-sm { padding: 32px 1rem; }
+  .section-header { margin-bottom: 2rem; }
+  .section-header h2 { font-size: 1.5rem; }
+
+  /* --- Hero --- */
+  .hero-content { padding: 2.5rem 1rem; }
+  .hero-stats   { flex-wrap: wrap; gap: 1rem; justify-content: center; }
+  .hero-stat-value { font-size: 1.4rem; }
+  .hero-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
+  .hero-actions .btn { width: 100%; max-width: 320px; justify-content: center; }
+
+  /* --- Category cards (2 column on tablet → 1 on mobile) --- */
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+  /* --- Cards --- */
+  .card-body { padding: 1.25rem; }
+  .category-card { padding: 1.5rem 1rem; }
+  .cat-icon { width: 64px; height: 64px; font-size: 1.8rem; }
+
+  /* --- Footer --- */
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2.5rem 1.25rem 2rem;
+  }
+  footer .footer-bottom {
+    padding: 1.25rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  /* --- Filters & Tabs --- */
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+  }
   .filter-bar .form-control { max-width: none; }
-  .tabs { overflow-x: auto; }
-}
-@media (max-width: 480px) {
-  .hero-content { padding: 2rem 1rem; }
+  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab-btn { padding: 10px 16px; font-size: 0.82rem; }
+
+  /* --- Modals --- */
+  .modal-overlay { padding: 0.5rem; align-items: flex-end; }
+  .modal { max-height: 95vh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .modal-header { padding: 1.25rem 1.25rem; }
+  .modal-body   { padding: 1.25rem; }
+  .modal-footer { padding: 1rem 1.25rem; flex-direction: column; }
+  .modal-footer .btn { width: 100%; justify-content: center; }
+
+  /* --- Toast — keep on screen on mobile --- */
+  #toast-container { bottom: 16px; right: 12px; left: 12px; }
+  .toast { min-width: unset; width: 100%; }
+
+  /* --- Auth pages --- */
+  .role-cards-grid { grid-template-columns: 1fr; max-width: 360px; gap: 1rem; }
+  .role-card { padding: 1.5rem 1.25rem; }
   .auth-card-body { padding: 1.25rem; }
-  .modal { margin: 0 0.5rem; }
+  .auth-card-header { padding: 1.5rem 1.25rem 1rem; }
+
+  /* --- Dashboard --- */
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; }
+  .sidebar-toggle-btn { display: flex; align-items: center; justify-content: center; }
+  .dashboard-main { margin-left: 0; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-content { padding: 1rem; }
+  .dashboard-topbar { padding: 0.75rem 1rem; }
+  .dashboard-topbar-title { font-size: 0.95rem; }
+  .dash-search .form-control { max-width: none; width: 100%; }
+  .dash-search { flex-direction: column; }
+
+  /* --- Page hero (inner pages) --- */
+  .page-hero { padding: 2.5rem 1rem; }
+  .page-hero h1 { font-size: 1.6rem; }
+}
+
+/* ── Small Phones (≤ 480px) ── */
+@media (max-width: 480px) {
+
+  /* --- Navbar --- */
+  .nav-logo .logo-icon { width: 32px; height: 32px; font-size: 1rem; }
+  .nav-logo span { font-size: 0.9rem; }
+
+  /* --- Hero --- */
+  .hero-content { padding: 2rem 1rem; }
+  .hero-stats { gap: 0.75rem; }
+  .hero-stat-value { font-size: 1.25rem; }
+  .hero-stat-label { font-size: 0.7rem; }
+
+  /* --- Grids collapse fully --- */
+  .grid-4 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+
+  /* --- Register form name fields — stack instead of side-by-side --- */
+  .register-name-row { grid-template-columns: 1fr !important; }
+
+  /* --- Auth card --- */
+  .auth-card { border-radius: var(--radius); }
+  .auth-card-body { padding: 1rem; }
+  .auth-card-header { padding: 1.25rem 1rem 0.75rem; }
+  .auth-icon { width: 56px; height: 56px; font-size: 1.8rem; }
+
+  /* --- Role selection --- */
+  .role-select-page { padding: 1.25rem 0.875rem; }
+  .role-select-header h1 { font-size: 1.5rem; }
+  .role-select-header p  { font-size: 0.875rem; }
+  .role-cards-grid { max-width: 100%; gap: 0.75rem; }
+  .role-card { padding: 1.25rem 1rem; }
+  .role-card-emoji { font-size: 2.2rem; margin-bottom: 0.75rem; }
+  .role-card-title { font-size: 1rem; }
+  .role-card-desc  { font-size: 0.78rem; margin-bottom: 1rem; }
+
+  /* --- Buttons --- */
+  .btn-lg { padding: 13px 24px; font-size: 0.95rem; }
+  .btn    { padding: 10px 22px; font-size: 0.875rem; }
+
+  /* --- Modal --- */
+  .modal { margin: 0; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+
+  /* --- Dashboard stats --- */
+  .stats-grid   { grid-template-columns: 1fr; }
+  .stat-value   { font-size: 1.6rem; }
+
+  /* --- Section padding --- */
+  .section    { padding: 36px 0.875rem; }
+  .section-sm { padding: 24px 0.875rem; }
+
+  /* --- Footer --- */
+  .footer-top { padding: 2rem 0.875rem 1.5rem; gap: 1.5rem; }
+  .footer-brand p { max-width: none; }
+  .social-links { flex-wrap: wrap; }
+
+  /* --- Category cards --- */
+  .category-card { padding: 1.25rem 0.875rem; }
+  .cat-icon { width: 56px; height: 56px; font-size: 1.6rem; margin-bottom: 1rem; }
+
+  /* --- Tables in dashboard --- */
+  .dash-table th, .dash-table td { padding: 10px 10px; font-size: 0.78rem; }
+
+  /* --- Toast --- */
+  #toast-container { bottom: 12px; right: 8px; left: 8px; }
+  .toast { font-size: 0.82rem; padding: 12px 14px; }
+
+  /* --- Profile section --- */
+  .profile-avatar-section { flex-direction: column; text-align: center; }
+  .profile-grid { grid-template-columns: 1fr; }
+
+  /* --- Input group stacking --- */
+  .input-group { flex-direction: column; }
+
+  /* --- Hospital/Donor cards --- */
+  .hospital-card { flex-direction: column; }
+  .hospital-icon { width: 48px; height: 48px; font-size: 1.3rem; }
+  .donor-card { flex-wrap: wrap; }
 }
 
 /* ============================================================
@@ -1607,24 +1805,6 @@ body.dashboard-body { padding-top: 0; background: #f1f5f9; }
 .dash-search { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem; }
 .dash-search .form-control { max-width: 280px; }
 
-@media (max-width: 1024px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .profile-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 768px) {
-  .role-cards-grid { grid-template-columns: 1fr; }
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-overlay.open { display: block; }
-  .sidebar-toggle-btn { display: flex; align-items: center; justify-content: center; }
-  .dashboard-main { margin-left: 0; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .dashboard-content { padding: 1rem; }
-}
-@media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr; }
-}
-
 /* ============================================================
    AUTH PAGES — Login & Register
    ============================================================ */
@@ -1795,17 +1975,6 @@ body.auth-page { padding-top: 0 !important; }
 .pw-strength-track { height: 4px; background: var(--border); border-radius: 4px; margin-top: 6px; overflow: hidden; }
 .pw-strength-bar   { height: 100%; border-radius: 4px; transition: width 0.3s ease, background 0.3s ease; width: 0%; }
 
-/* ── Responsive auth ── */
-@media (max-width: 768px) {
-  .role-cards-grid  { grid-template-columns: 1fr; max-width: 400px; }
-  .role-card        { padding: 1.5rem 1.25rem; }
-  .auth-card-body   { padding: 1.25rem 1.25rem 1.5rem; }
-}
-@media (max-width: 480px) {
-  .role-select-page    { padding: 1.5rem 1rem; }
-  .role-select-header h1 { font-size: 1.6rem; }
-}
-
 /* ── Register Page — Role Tab Switcher ── */
 .role-tab-bar {
   display: flex;
@@ -1832,56 +2001,30 @@ body.auth-page { padding-top: 0 !important; }
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 .role-tab-btn:hover:not(.active) { color: var(--text-medium); }
-
 .role-tab-panel { display: none; }
 .role-tab-panel.active { display: block; }
 
 /* ============================================================
    HERO DOCTOR CARD — RESPONSIVE
    ============================================================ */
-
-/* Tablet (≤ 1024px): tighten the gap */
 @media (max-width: 1024px) {
-  .hero-content {
-    gap: 2.5rem;
-  }
-  .hero-doctor-card {
-    max-width: 360px;
-  }
+  .hero-content { gap: 2.5rem; }
+  .hero-doctor-card { max-width: 360px; }
 }
-
-/* Mobile (≤ 768px): stack vertically */
 @media (max-width: 768px) {
-  .hero-content {
-    grid-template-columns: 1fr;
-    text-align: center;
-    padding: 3rem 1.25rem;
-    gap: 2.5rem;
-  }
-  .hero-text p      { margin-left: auto; margin-right: auto; }
-  .hero-actions     { justify-content: center; }
-  .hero-stats       { justify-content: center; flex-wrap: wrap; gap: 1.25rem; }
-  .hero-visual      { justify-content: center; }
+  .hero-text p   { margin-left: auto; margin-right: auto; }
+  .hero-visual   { justify-content: center; }
   .hero-doctor-card {
     max-width: 340px;
     border-radius: 20px;
-    animation: none;         /* disable float on mobile for perf */
+    animation: none;
     transform: none !important;
   }
   .hero-doctor-img-wrap { aspect-ratio: 3 / 3.5; }
   .hero-doctor-badge    { font-size: 0.78rem; padding: 7px 16px; }
 }
-
-/* Small phones (≤ 480px) */
 @media (max-width: 480px) {
-  .hero-doctor-card {
-    max-width: 300px;
-    border-radius: 18px;
-  }
+  .hero-doctor-card { max-width: 280px; border-radius: 16px; }
   .hero-doctor-img-wrap { aspect-ratio: 1 / 1.2; }
-  .hero-doctor-badge {
-    bottom: 12px;
-    font-size: 0.74rem;
-    padding: 6px 14px;
-  }
+  .hero-doctor-badge { bottom: 12px; font-size: 0.74rem; padding: 6px 14px; }
 }
