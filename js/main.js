@@ -13,20 +13,13 @@ if (navbar) {
 // ─── Hamburger menu ─────────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.getElementById('navLinks');
-const navActions = document.getElementById('navActions');
 
 if (hamburger && navLinks) {
 
-  // Inject mobile Sign In / Sign Up into nav-links (once)
-  if (navActions && !navLinks.querySelector('.nav-mobile-actions')) {
-    const mobileActions = document.createElement('div');
-    mobileActions.className = 'nav-mobile-actions';
-    mobileActions.innerHTML = navActions.innerHTML;
-    navLinks.appendChild(mobileActions);
-  }
-
   hamburger.addEventListener('click', (e) => {
     e.stopPropagation();
+    // Sync mobile actions before opening (always fresh)
+    syncMobileActions();
     navLinks.classList.toggle('open');
     hamburger.classList.toggle('open');
   });
@@ -52,13 +45,26 @@ if (hamburger && navLinks) {
   });
 }
 
+// ─── Sync mobile actions (called on menu open + after auth) ────
+function syncMobileActions() {
+  const links  = document.getElementById('navLinks');
+  const actions = document.getElementById('navActions');
+  if (!links || !actions) return;
+  let mobileDiv = links.querySelector('.nav-mobile-actions');
+  if (!mobileDiv) {
+    mobileDiv = document.createElement('div');
+    mobileDiv.className = 'nav-mobile-actions';
+    links.appendChild(mobileDiv);
+  }
+  mobileDiv.innerHTML = actions.innerHTML;
+}
+
 // ─── Auth state ─────────────────────────────────────────────
 function updateNavAuth() {
-  const user = getUser();   // getUser() is defined in supabase-client.js (reads localStorage)
+  const user = getUser();
   const navActions = document.getElementById('navActions');
   if (!navActions) return;
   if (user) {
-    // Supabase profiles use first_name / last_name (snake_case)
     const firstName = user.first_name || user.firstName || '';
     const lastName  = user.last_name  || user.lastName  || '';
     const initials  = ((firstName[0]||'') + (lastName[0]||'')).toUpperCase() || '👤';
@@ -90,6 +96,8 @@ function updateNavAuth() {
       });
     }
   }
+  // Always sync mobile actions after auth update
+  syncMobileActions();
 }
 
 // NOTE: getUser() is defined in supabase-client.js — reads from localStorage
