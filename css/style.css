@@ -315,6 +315,29 @@ p  { color: var(--text-medium); line-height: 1.7; }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
+/* ── Responsive grid utility — 2-col on desktop, 1-col on mobile ── */
+.responsive-2col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .responsive-2col-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  /* Collapse all register name-row grids */
+  .register-name-row { grid-template-columns: 1fr !important; }
+  /* Collapse grid-2 on mobile */
+  .grid-2 { grid-template-columns: 1fr; }
+  /* Collapse grid-3 to 2-col on tablet */
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  /* Collapse grid-4 to 2-col on tablet */
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  /* All grids → 1 col on small phones */
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
 /* ============================================================
    CARDS
    ============================================================ */
@@ -1312,6 +1335,9 @@ footer::before {
     z-index: 999;
     gap: 0.25rem;
   }
+  /* Mobile actions div — hidden by default, shown when menu opens */
+  .nav-mobile-actions { display: none; }
+
   /* Show Sign In/Sign Up inside the mobile menu when open */
   .nav-links.open .nav-mobile-actions {
     display: flex;
@@ -2027,4 +2053,139 @@ body.auth-page { padding-top: 0 !important; }
   .hero-doctor-card { max-width: 280px; border-radius: 16px; }
   .hero-doctor-img-wrap { aspect-ratio: 1 / 1.2; }
   .hero-doctor-badge { bottom: 12px; font-size: 0.74rem; padding: 6px 14px; }
+}
+
+/* ============================================================
+   PAGE-SPECIFIC RESPONSIVE OVERRIDES
+   Overrides inline grid-template-columns on medicine.html,
+   dashboards, and other pages with hard-coded 2-col layouts
+   ============================================================ */
+
+/* ── Medicine page: Symptom + Scanner 2-col → 1-col on mobile ── */
+@media (max-width: 768px) {
+  /* Symptom analysis grid */
+  #moduleSymptoms > div[style*="grid-template-columns"],
+  #moduleScanner  > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Analyze button — full width */
+  #moduleSymptoms .btn.btn-primary { margin-left: 0 !important; width: 100%; }
+
+  /* Scanner upload action row → stack */
+  #uploadPreviewWrap > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Medicine search row → stack */
+  #moduleScanner div[style*="display:flex"][style*="gap:8px"]:has(#medicineSearchInput) {
+    flex-direction: column;
+  }
+  #medicineSearchBtn { width: 100%; }
+
+  /* Dashboard overview quick-actions 2-col → 1-col */
+  #panel-overview > div[style*="grid-template-columns:2fr 1fr"],
+  #panel-overview > div[style*="grid-template-columns: 2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Doctor medicine form 2-col grids → 1-col */
+  #docMedicineForm > div[style*="grid-template-columns:1fr 1fr"],
+  #docMedicineForm > div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Appointment search input — full width */
+  #aptSearch { width: 100% !important; }
+
+  /* Dashboard topbar on tiny screens */
+  .dashboard-topbar { flex-wrap: wrap; gap: 0.5rem; }
+  .dashboard-topbar > div:first-child { flex: 1; min-width: 0; }
+
+  /* Appointment header flex wrap */
+  .dash-card-header { flex-wrap: wrap; gap: 0.5rem; }
+  .dash-card-header > div { flex-wrap: wrap; gap: 0.5rem; }
+
+  /* Scanner modal footer buttons stack */
+  #captureBtnWrap { flex-direction: column; }
+  #captureBtnWrap .btn { width: 100%; }
+  #captureActionWrap { flex-direction: column; }
+  #captureActionWrap .btn { width: 100%; }
+
+  /* Blood group filter buttons wrap nicely */
+  .blood-group-btn { padding: 8px 14px; font-size: 0.82rem; }
+
+  /* Hospital card on mobile */
+  .hospital-card { flex-direction: column; gap: 0.75rem; }
+
+  /* Appointment page doctor cards filter bar */
+  .filter-bar > * { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  /* Medicine page tab buttons */
+  .tabs .tab-btn { padding: 10px 12px; font-size: 0.8rem; }
+
+  /* Quick symptom chips smaller */
+  .symptom-chip { font-size: 0.72rem; padding: 4px 10px; }
+
+  /* Stat breakdown boxes in doctor dashboard */
+  #panel-overview .dash-card-body > div[style*="display:flex"] { flex-direction: column; }
+
+  /* Dashboard topbar title truncate */
+  .dashboard-topbar-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+  }
+
+  /* Sidebar toggle button positioning */
+  .sidebar-toggle-btn { top: 0.75rem; left: 0.75rem; width: 36px; height: 36px; }
+
+  /* Prescription modal patient info stack */
+  .modal-body div[style*="display:flex;justify-content:space-between"] {
+    flex-direction: column !important;
+  }
+
+  /* Page hero smaller on tiny phones */
+  .page-hero { padding: 2rem 0.875rem; }
+  .page-hero h1 { font-size: 1.4rem; }
+
+  /* Abstract page */
+  .abstract-section { padding: 1.25rem; }
+
+  /* Terms page */
+  .section .container { padding: 0; }
+
+  /* No horizontal overflow anywhere */
+  body { overflow-x: hidden; }
+  * { max-width: 100%; }
+  img, video, canvas { max-width: 100%; height: auto; }
+}
+
+/* ── Prevent horizontal scroll on ALL screens ── */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* ── Touch-friendly minimum tap targets (44px) ── */
+@media (max-width: 768px) {
+  .btn, button, .nav-hamburger,
+  .sidebar-nav-item, .sidebar-logout,
+  .role-card, .category-card,
+  .tab-btn, .role-tab-btn,
+  input[type="checkbox"], input[type="radio"] {
+    min-height: 44px;
+  }
+  .btn-sm { min-height: 36px; }
+  .symptom-chip { min-height: 36px; }
+
+  /* Larger touch area for hamburger */
+  .nav-hamburger { padding: 12px; min-width: 44px; min-height: 44px; }
+
+  /* Proper line-height for readability on small screens */
+  body { line-height: 1.65; }
+  p    { font-size: 0.9375rem; }
 }
