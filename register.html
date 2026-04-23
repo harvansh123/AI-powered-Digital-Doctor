@@ -11,7 +11,7 @@
 </head>
 <body style="background:linear-gradient(135deg,#0f172a,#1e3a8a,#0c4a6e);min-height:100vh;padding-top:0">
 
-<div style="min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:3rem 1rem 2rem">
+<div style="min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem">
   <div style="width:100%;max-width:540px">
 
     <!-- Logo -->
@@ -49,7 +49,7 @@
         <!-- ═══ PATIENT REGISTRATION TAB ═══ -->
         <div class="role-tab-panel active" id="tabPatient">
           <form id="registerForm" onsubmit="handleRegister(event)">
-            <div class="grid grid-2" style="gap:1rem">
+            <div class="grid grid-2 register-name-row" style="gap:1rem">
               <div class="form-group">
                 <label class="form-label required" for="regFirstName">First Name</label>
                 <input id="regFirstName" class="form-control" type="text" placeholder="John" required/>
@@ -101,7 +101,7 @@
             <span>Doctor accounts require <strong>Admin approval</strong> after registration. You'll be notified once approved.</span>
           </div>
           <form id="doctorRegisterForm" onsubmit="handleDoctorRegister(event)">
-            <div class="grid grid-2" style="gap:1rem">
+            <div class="grid grid-2 register-name-row" style="gap:1rem">
               <div class="form-group">
                 <label class="form-label required" for="docFirstName">First Name</label>
                 <input id="docFirstName" class="form-control" type="text" placeholder="Dr. First" required/>
@@ -140,7 +140,7 @@
                 <option>Other</option>
               </select>
             </div>
-            <div class="grid grid-2" style="gap:1rem">
+            <div class="grid grid-2 register-name-row" style="gap:1rem">
               <div class="form-group">
                 <label class="form-label required" for="docExperience">Experience</label>
                 <input id="docExperience" class="form-control" type="text" placeholder="e.g. 10 years" required/>
