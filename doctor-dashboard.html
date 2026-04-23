@@ -165,7 +165,7 @@
         </div>
 
         <!-- Quick Actions -->
-        <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+        <div class="responsive-2col-grid" style="grid-template-columns:2fr 1fr;margin-bottom:1.5rem">
           <div class="dash-card">
             <div class="dash-card-header">
               <h3>📋 Recent Appointments</h3>
@@ -401,7 +401,7 @@
           </div>
           <div class="dash-card-body">
             <form id="docMedicineForm" onsubmit="docAddMedicine(event)">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+              <div class="responsive-2col-grid" style="margin-bottom:1rem">
                 <div class="form-group" style="margin-bottom:0">
                   <label class="form-label required">Medicine Name</label>
                   <input id="docMName" class="form-control" type="text" placeholder="e.g. Paracetamol" required/>
@@ -411,7 +411,7 @@
                   <input id="docMUsedFor" class="form-control" type="text" placeholder="Fever, headache, pain" required/>
                 </div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+              <div class="responsive-2col-grid" style="margin-bottom:1rem">
                 <div class="form-group" style="margin-bottom:0">
                   <label class="form-label">Age Group</label>
                   <input id="docMAgeGroup" class="form-control" type="text" placeholder="Adults 18+, All ages"/>
@@ -421,7 +421,7 @@
                   <input id="docMDosage" class="form-control" type="text" placeholder="500mg every 6 hours"/>
                 </div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+              <div class="responsive-2col-grid" style="margin-bottom:1rem">
                 <div class="form-group" style="margin-bottom:0">
                   <label class="form-label">Side Effects</label>
                   <textarea id="docMSideEffects" class="form-control" rows="2" placeholder="Nausea, drowsiness…"></textarea>
