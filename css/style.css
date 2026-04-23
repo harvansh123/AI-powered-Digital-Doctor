@@ -482,7 +482,10 @@ p  { color: var(--text-medium); line-height: 1.7; }
   animation: float-card 6s ease-in-out infinite;
   border: 3px solid rgba(255, 255, 255, 0.8);
   background: linear-gradient(135deg, #eff6ff, #f0f9ff);
-  transition: box-shadow 0.4s ease, transform 0.4s ease;
+  transition: box-shadow 0.4s ease;
+  /* GPU-accelerated — prevents layout shift */
+  will-change: transform;
+  transform: translateZ(0);
 }
 .hero-doctor-card:hover {
   box-shadow:
@@ -1302,11 +1305,12 @@ footer::before {
 /* ── Tablet (≤ 1024px) ── */
 @media (max-width: 1024px) {
   .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
-  .hero-content { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+  /* Keep hero 2-col on tablet, just tighter */
+  .hero-content { grid-template-columns: 1fr 1fr; gap: 2rem; }
   .hero-text p  { max-width: none; }
-  .hero-actions { justify-content: center; }
-  .hero-stats   { justify-content: center; }
-  .hero-visual  { display: none; }
+  /* Show hero image on tablet — just smaller */
+  .hero-visual  { display: flex; justify-content: center; }
+  .hero-doctor-card { max-width: 300px; }
   .grid-4       { grid-template-columns: repeat(2, 1fr); }
   .stats-grid   { grid-template-columns: repeat(2, 1fr); }
   .profile-grid { grid-template-columns: 1fr; }
