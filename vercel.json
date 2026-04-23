@@ -2,11 +2,6 @@
   "buildCommand": "",
   "outputDirectory": ".",
   "installCommand": "",
-  "rewrites": [
-    { "source": "/css/:file*", "destination": "/:file*" },
-    { "source": "/js/:file*",  "destination": "/:file*" },
-    { "source": "/assets/:file*", "destination": "/:file*" }
-  ],
   "headers": [
     {
       "source": "/(.*)",
