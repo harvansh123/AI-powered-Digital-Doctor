@@ -1322,7 +1322,10 @@ footer::before {
   /* --- Navbar --- */
   .navbar { padding: 0 1rem; }
   .nav-links { display: none; }
-  .nav-actions { display: none; }           /* hide Sign In/Sign Up from top bar */
+  /* Hide Sign In/Sign Up buttons on mobile (go into hamburger menu) */
+  .nav-actions { display: none; }
+  /* EXCEPTION: When logged in, show avatar in top navbar on mobile too */
+  .nav-actions.is-logged-in { display: flex; align-items: center; }
   .nav-hamburger { display: flex; }
   .nav-logo span { font-size: 1rem; }
 
@@ -1338,6 +1341,8 @@ footer::before {
     box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     z-index: 999;
     gap: 0.25rem;
+    max-height: calc(100vh - var(--nav-height));
+    overflow-y: auto;
   }
   /* Mobile actions div — hidden by default, shown when menu opens */
   .nav-mobile-actions { display: none; }
@@ -1360,6 +1365,14 @@ footer::before {
     font-size: 0.875rem;
     font-weight: 600;
   }
+  /* When logged in — mobile menu shows profile/logout instead */
+  .nav-links.open .nav-mobile-actions .nav-user {
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
 
   /* Dropdown on mobile — show as block */
   .nav-dropdown-menu {
@@ -1378,8 +1391,19 @@ footer::before {
   }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
 
-  /* --- Grids --- */
-  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  /* --- Grids — responsive stacking --- */
+  /* grid-2: 1-col on mobile (already set via earlier rule) */
+  .grid-2 { grid-template-columns: 1fr; }
+  /* grid-3: 2-col on mobile for tablets, 1-col via 480px rule */
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  /* grid-4: 2-col stays on mobile */
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Responsive 2col grid → stack */
+  .responsive-2col-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem;
+  }
 
   /* --- Sections --- */
   .section    { padding: 48px 1rem; }
