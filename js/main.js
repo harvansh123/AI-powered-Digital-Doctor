@@ -13,15 +13,41 @@ if (navbar) {
 // ─── Hamburger menu ─────────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
 const navLinks  = document.getElementById('navLinks');
+const navActions = document.getElementById('navActions');
+
 if (hamburger && navLinks) {
-  hamburger.addEventListener('click', () => {
+
+  // Inject mobile Sign In / Sign Up into nav-links (once)
+  if (navActions && !navLinks.querySelector('.nav-mobile-actions')) {
+    const mobileActions = document.createElement('div');
+    mobileActions.className = 'nav-mobile-actions';
+    mobileActions.innerHTML = navActions.innerHTML;
+    navLinks.appendChild(mobileActions);
+  }
+
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
     navLinks.classList.toggle('open');
     hamburger.classList.toggle('open');
   });
+
+  // Mobile dropdown — toggle on tap
+  navLinks.querySelectorAll('.nav-dropdown > a').forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        e.stopPropagation();
+        trigger.closest('.nav-dropdown').classList.toggle('open');
+      }
+    });
+  });
+
   // Close on outside click
   document.addEventListener('click', (e) => {
     if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
       navLinks.classList.remove('open');
+      hamburger.classList.remove('open');
+      navLinks.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
     }
   });
 }
