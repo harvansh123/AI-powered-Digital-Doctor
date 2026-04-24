@@ -465,15 +465,18 @@ p  { color: var(--text-medium); line-height: 1.7; }
 }
 .hero-visual {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 100%;
 }
 /* ── Hero Doctor Image Card ── */
 .hero-doctor-card {
   position: relative;
   width: 100%;
   max-width: 420px;
+  margin: 0 auto; /* ensure centered when parent stacks */
   border-radius: 28px;
   overflow: hidden;
   box-shadow:
@@ -1099,6 +1102,8 @@ footer::before {
   overflow: hidden;
   transition: var(--transition);
   box-shadow: var(--card-shadow);
+  width: 100%; /* prevent card from shrinking inside grid cell */
+  box-sizing: border-box;
 }
 .doctor-card:hover {
   transform: translateY(-4px);
@@ -1242,9 +1247,11 @@ footer::before {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-end;
   margin-bottom: 2rem;
   box-shadow: var(--card-shadow);
+  width: 100%;
+  box-sizing: border-box;
 }
 .filter-bar .form-control { max-width: 200px; }
 
@@ -2082,20 +2089,56 @@ body.auth-page { padding-top: 0 !important; }
     margin: 0 auto;
   }
 
-  .hero-visual   { justify-content: center; }
+  /* Hero visual — center the card in its column */
+  .hero-visual {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
   .hero-doctor-card {
-    max-width: 340px;
+    width: 100%;           /* fill the 1-col grid cell */
+    max-width: 380px;      /* cap width on larger phones */
+    margin: 0 auto;        /* center within grid column */
     border-radius: 20px;
     animation: none;
     transform: none !important;
   }
   .hero-doctor-img-wrap { aspect-ratio: 3 / 3.5; }
   .hero-doctor-badge    { font-size: 0.78rem; padding: 7px 16px; }
+
+  /* Doctor appointment cards — 1-col, full width */
+  #doctorGrid.grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+  .doctor-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Filter bar — release max-width constraint on controls */
+  .filter-bar .form-control { max-width: 100% !important; width: 100%; }
+  .filter-bar > * { width: 100%; }
 }
 @media (max-width: 480px) {
-  .hero-doctor-card { max-width: 280px; border-radius: 16px; }
+  .hero-doctor-card {
+    width: 100%;       /* truly full-width on small phones */
+    max-width: 100%;   /* override all fixed max-widths */
+    border-radius: 16px;
+    margin: 0 auto;
+  }
   .hero-doctor-img-wrap { aspect-ratio: 1 / 1.2; }
   .hero-doctor-badge { bottom: 12px; font-size: 0.74rem; padding: 6px 14px; }
+
+  /* Doctor cards — single col, no overflow */
+  #doctorGrid.grid-3 {
+    grid-template-columns: 1fr !important;
+    padding: 0;
+  }
+  .doctor-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius);
+  }
 }
 
 /* ============================================================
