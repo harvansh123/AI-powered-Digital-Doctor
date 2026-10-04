@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — AI Digital Doctor</title>
+  <meta name="description" content="Sign in to AI Digital Doctor as a Patient, Doctor, or Admin."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="auth-page">
+
+<!-- ═══ ROLE SELECTION SCREEN ═══ -->
+<div id="roleSelectScreen" class="role-select-page">
+  <div class="role-select-header">
+    <div class="logo-row">
+      <span style="font-size:1.5rem">🏥</span>
+      <span style="font-weight:800;color:white;font-size:1rem">AI Digital Doctor</span>
+    </div>
+    <h1>Welcome Back</h1>
+    <p>Select your role to sign in to your account</p>
+  </div>
+
+  <div class="role-cards-grid">
+    <!-- Patient -->
+    <div class="role-card role-card-patient" onclick="selectRole('patient')" id="rolePatient">
+      <span class="role-card-emoji">🩺</span>
+      <div class="role-card-title">Patient</div>
+      <div class="role-card-desc">Access your health records, book appointments, and get AI-powered medical guidance</div>
+      <span class="role-card-btn">Sign In as Patient →</span>
+    </div>
+
+    <!-- Doctor -->
+    <div class="role-card role-card-doctor" onclick="selectRole('doctor')" id="roleDoctor">
+      <span class="role-card-emoji">👨‍⚕️</span>
+      <div class="role-card-title">Doctor</div>
+      <div class="role-card-desc">Manage appointments, view patient records, add prescriptions and treatment notes</div>
+      <span class="role-card-btn">Sign In as Doctor →</span>
+    </div>
+
+    <!-- Admin -->
+    <div class="role-card role-card-admin" onclick="selectRole('admin')" id="roleAdmin">
+      <span class="role-card-emoji">🛡️</span>
+      <div class="role-card-title">Admin</div>
+      <div class="role-card-desc">Manage platform users, approve doctors, monitor analytics and system activity</div>
+      <span class="role-card-btn">Admin Access →</span>
+    </div>
+  </div>
+
+  <p style="color:rgba(255,255,255,0.45);margin-top:2rem;font-size:0.8rem;position:relative;z-index:1">
+    Don't have an account? <a href="register.html" style="color:rgba(255,255,255,0.75);font-weight:600">Register here →</a>
+  </p>
+</div>
+
+<!-- ═══ LOGIN FORM SCREEN ═══ -->
+<div id="loginFormScreen" style="display:none;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a,#0c4a6e);align-items:center;justify-content:center;padding:2rem;flex-direction:column;">
+
+  <div style="width:100%;max-width:460px;position:relative;z-index:1">
+
+    <!-- Back button -->
+    <button class="back-to-roles" onclick="goBackToRoles()" style="color:rgba(255,255,255,0.8);margin-bottom:1.25rem">
+      ← Back to Role Selection
+    </button>
+
+    <div class="auth-card" style="border-radius:var(--radius-lg);overflow:hidden">
+      <div class="auth-card-header" style="text-align:center;padding:2rem 2rem 1.5rem">
+        <div id="loginRoleIcon" class="auth-icon" style="font-size:2.5rem;margin-bottom:0.75rem">🔐</div>
+        <h2 id="loginRoleTitle" style="font-size:1.4rem">Sign In</h2>
+        <p id="loginRoleDesc" style="color:var(--text-light);font-size:0.875rem;margin-top:4px">Welcome back!</p>
+      </div>
+      <div class="auth-card-body" style="padding:1.75rem 2rem 2rem">
+
+        <!-- Role indicator pill -->
+        <div id="roleIndicator" style="display:flex;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:var(--radius-full);padding:8px 16px;margin-bottom:1.5rem;font-size:0.82rem;font-weight:600;color:#0369a1">
+          <span id="roleIndicatorIcon">🩺</span>
+          <span id="roleIndicatorText">Signing in as Patient</span>
+          <button onclick="goBackToRoles()" style="margin-left:auto;background:none;border:none;font-size:0.75rem;color:#0369a1;cursor:pointer;font-weight:700">Change</button>
+        </div>
+
+        <!-- Error alert -->
+        <div id="loginError" class="alert alert-danger" style="display:none">
+          <span class="alert-icon">❌</span>
+          <span id="loginErrorMsg">Invalid credentials. Please try again.</span>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label class="form-label required" for="loginEmail">Email Address</label>
+            <input id="loginEmail" class="form-control" type="email" placeholder="your@email.com" autocomplete="email" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label required" for="loginPassword">Password</label>
+            <div style="position:relative">
+              <input id="loginPassword" class="form-control" type="password" placeholder="Enter your password" autocomplete="current-password" required/>
+              <button type="button" onclick="togglePassword('loginPassword','eyeLogin')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-light)" id="eyeLogin">👁️</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+            <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;cursor:pointer">
+              <input type="checkbox" style="accent-color:var(--primary)"/> Remember me
+            </label>
+            <a href="#" style="font-size:0.85rem;color:var(--primary);font-weight:600">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="loginBtn">
+            🔐 Sign In
+          </button>
+        </form>
+
+        <!-- Demo credentials hint -->
+        <div id="demoHint" style="margin-top:1rem;padding:10px 14px;background:#f8fafc;border-radius:var(--radius-sm);font-size:0.78rem;color:var(--text-light);border:1px solid var(--border)">
+          <strong style="color:var(--text-medium)">Demo:</strong> <span id="demoCredText">demo@test.com / password123</span>
+        </div>
+
+        <div class="auth-footer" style="margin-top:1rem;text-align:center;font-size:0.875rem;color:var(--text-light)">
+          Don't have an account? <a href="register.html" style="color:var(--primary);font-weight:600">Register here →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script>
+// ── Role Selection Logic ──────────────────────────────────────
+let currentRole = 'patient';
+
+const ROLE_CONFIG = {
+  patient: {
+    icon: '🩺', title: 'Patient Login', desc: 'Access your healthcare dashboard',
+    indicatorIcon: '🩺', indicatorText: 'Signing in as Patient',
+    indicatorStyle: 'background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8',
+    demo: 'demo@test.com / password123',
+    redirect: 'index.html'
+  },
+  doctor: {
+    icon: '👨‍⚕️', title: 'Doctor Login', desc: 'Access your Doctor Dashboard',
+    indicatorIcon: '👨‍⚕️', indicatorText: 'Signing in as Doctor',
+    indicatorStyle: 'background:#f0fdf4;border-color:#bbf7d0;color:#166534',
+    demo: 'doctor@test.com / doctor123',
+    redirect: 'doctor-dashboard.html'
+  },
+  admin: {
+    icon: '🛡️', title: 'Admin Login', desc: 'Platform Administration Access',
+    indicatorIcon: '🛡️', indicatorText: 'Signing in as Admin',
+    indicatorStyle: 'background:#faf5ff;border-color:#e9d5ff;color:#7c3aed',
+    demo: 'admin@hospital.com / admin123',
+    redirect: 'admin-dashboard.html'
+  }
+};
+
+function selectRole(role) {
+  currentRole = role;
+  const cfg = ROLE_CONFIG[role];
+
+  document.getElementById('loginRoleIcon').textContent = cfg.icon;
+  document.getElementById('loginRoleTitle').textContent = cfg.title;
+  document.getElementById('loginRoleDesc').textContent = cfg.desc;
+  document.getElementById('roleIndicator').setAttribute('style', cfg.indicatorStyle + ';display:flex;align-items:center;gap:8px;border-radius:999px;padding:8px 16px;margin-bottom:1.5rem;font-size:0.82rem;font-weight:600;');
+  document.getElementById('roleIndicatorIcon').textContent = cfg.indicatorIcon;
+  document.getElementById('roleIndicatorText').textContent = cfg.indicatorText;
+  document.getElementById('demoCredText').textContent = cfg.demo;
+
+  // Show form screen
+  document.getElementById('roleSelectScreen').style.display = 'none';
+  const formScreen = document.getElementById('loginFormScreen');
+  formScreen.style.display = 'flex';
+}
+
+function goBackToRoles() {
+  document.getElementById('loginFormScreen').style.display = 'none';
+  document.getElementById('roleSelectScreen').style.display = 'flex';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('loginForm').reset();
+}
+
+// ── Session auto-redirect: only if user navigated back while already logged in ──
+// We use ?auto=1 so normal page loads (e.g. after registration) never redirect.
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const autoLogin = params.get('auto') === '1';
+
+  if (autoLogin && window.supabaseClient) {
+    try {
+      const { data: { session } } = await window.supabaseClient.auth.getSession();
+      if (session) {
+        const { data: profile } = await window.supabaseClient
+          .from('profiles')
+          .select('role, status')
+          .eq('id', session.user.id)
+          .single();
+        if (profile && profile.status !== 'pending' && profile.status !== 'blocked') {
+          const redirectMap = { patient: 'index.html', doctor: 'doctor-dashboard.html', admin: 'admin-dashboard.html' };
+          window.location.href = redirectMap[profile.role] || 'index.html';
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('[Login] Session check error:', err);
+    }
+  }
+});
+</script>
+</body>
+</html>

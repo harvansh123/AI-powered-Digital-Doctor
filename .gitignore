@@ -1,0 +1,25 @@
+# ─── Secrets ──────────────────────────────────────────────────────
+backend/.env
+
+# ─── Dependencies ─────────────────────────────────────────────────
+backend/node_modules/
+node_modules/
+
+# ─── Editor ───────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+
+# ─── OS junk ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Dev/test files (not needed in production) ────────────────────
+fix_sidebar.py
+test-connection.html
+*.py
+
+# ─── Logs ─────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
